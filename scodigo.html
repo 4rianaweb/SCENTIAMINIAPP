@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCENTIA APP — No es solo café, es una esencia diferente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,800;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            beige: {
+              50: '#FBF8F3',
+              100: '#F5EFE6',
+              200: '#EADFD0',
+              300: '#D8C7B0',
+            },
+            coffee: {
+              600: '#6F4E37',
+              700: '#543825',
+              800: '#3D2719',
+              900: '#2A1A10',
+            },
+            leaf: {
+              600: '#26533D',
+              700: '#1B4332',
+              800: '#122E22',
+            },
+            magenta: {
+              500: '#D81B60',
+              600: '#B51763',
+              700: '#8E114D',
+            },
+            babypink: {
+              100: '#FCE8F0',
+              200: '#F8C8DC',
+              300: '#F2A6C6',
+            }
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F5EFE6;
+      color: #3D2719;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-editorial {
+      font-family: 'Fraunces', serif;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+      animation: fadeSlideUp 0.35s ease-out forwards;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(181, 23, 99, 0.35); }
+      50% { box-shadow: 0 0 0 8px rgba(181, 23, 99, 0); }
+    }
+    .pulse-magenta {
+      animation: pulseGlow 2.4s infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-babypink-200 selection:text-coffee-900">
+
+  <!-- ==================== MODAL DE REGISTRO / BIENVENIDA ==================== -->
+  <div id="onboardingModal" class="fixed inset-0 z-50 bg-coffee-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-beige-50 border-2 border-coffee-800/15 rounded-3xl max-w-md w-full p-6 md:p-8 shadow-2xl animate-fade-up relative overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-babypink-200/50 blur-xl pointer-events-none"></div>
+      <div class="absolute -bottom-12 -left-12 w-36 h-36 rounded-full bg-leaf-700/15 blur-xl pointer-events-none"></div>
+
+      <div class="text-center mb-6 relative">
+        <span class="inline-block px-3 py-1 rounded-full bg-babypink-100 text-magenta-600 text-xs font-bold tracking-wider uppercase mb-2">
+          Acceso libre • Sin suscripción previa
+        </span>
+        <h1 class="font-editorial text-3xl md:text-4xl font-bold text-coffee-900 tracking-tight">SCENTIA</h1>
+        <p class="text-xs italic text-coffee-600 mt-1">"No es solo café, es una esencia diferente"</p>
+      </div>
+
+      <form id="onboardingForm" class="space-y-4 relative">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-coffee-800 mb-1">Número de celular</label>
+          <div class="flex rounded-xl border border-beige-300 bg-white overflow-hidden focus-within:border-leaf-700 focus-within:ring-2 focus-within:ring-leaf-700/20">
+            <span class="px-3 py-2.5 bg-beige-100 text-coffee-800 font-semibold text-sm border-r border-beige-200">+51</span>
+            <input type="tel" id="regPhone" required placeholder="987 654 321" maxlength="11"
+              class="w-full px-3 py-2.5 text-sm text-coffee-900 focus:outline-none" value="987 654 321" />
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold uppercase tracking-wider text-coffee-800">Tu Nickname Cafetero</label>
+            <button type="button" onclick="generateRandomNickname()"
+              class="text-xs font-bold text-magenta-600 hover:text-magenta-700 flex items-center gap-1 transition">
+              <span>🎲</span> Generar divertido
+            </button>
+          </div>
+          <input type="text" id="regNickname" required placeholder="Ej. Capitán Espresso"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-beige-300 bg-white text-sm text-coffee-900 font-medium focus:outline-none focus:border-leaf-700 focus:ring-2 focus:ring-leaf-700/20"
+            value="Barista Nocturno" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-coffee-800 mb-1">Ubicación predeterminada</label>
+          <select id="regLocation"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-beige-300 bg-white text-sm text-coffee-900 font-medium focus:outline-none focus:border-leaf-700">
+            <option value="Casa — Av. El Bosque 412, San Isidro">🏠 Casa — Av. El Bosque 412, San Isidro</option>
+            <option value="Oficina — Torre Begonias Piso 8">💼 Oficina — Torre Begonias Piso 8</option>
+            <option value="Universidad — Campus Central Pabellón B">🎓 Universidad — Campus Central Pabellón B</option>
+          </select>
+        </div>
+
+        <div class="bg-leaf-700/10 border border-leaf-700/20 rounded-xl p-3 flex items-center gap-3">
+          <span class="text-2xl">☕</span>
+          <p class="text-xs text-coffee-800">
+            Empiezas en el rango <strong class="text-leaf-700">Primer Sorbo · Americano</strong>. ¡Sube de nivel con cada pedido para desbloquear beneficios exclusivos!
+          </p>
+        </div>
+
+        <button type="submit"
+          class="w-full py-3.5 rounded-xl bg-leaf-700 hover:bg-leaf-800 text-white font-bold text-sm tracking-wide shadow-lg shadow-leaf-700/25 transition transform active:scale-[0.99]">
+          Entrar a SCENTIA APP →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== BARRA SUPERIOR (HEADER) ==================== -->
+  <header class="sticky top-0 z-30 bg-beige-50/95 backdrop-blur-md border-b border-beige-300/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <!-- Logo -->
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchMainTab('home')">
+        <div class="w-9 h-9 rounded-xl bg-leaf-700 text-beige-50 flex items-center justify-center font-editorial font-bold text-lg shadow-sm">
+          S
+        </div>
+        <div>
+          <span class="font-editorial font-bold text-xl tracking-tight text-coffee-900 block leading-none">SCENTIA</span>
+          <span class="text-[10px] text-magenta-600 font-semibold tracking-wider uppercase hidden sm:block">Especialidad & Esencia</span>
+        </div>
+      </div>
+
+      <!-- Selector rápido de ubicación -->
+      <div class="flex-1 max-w-xs sm:max-w-sm">
+        <button onclick="openLocationModal()"
+          class="w-full flex items-center justify-between gap-2 px-3 py-1.5 rounded-full bg-white border border-beige-300 hover:border-coffee-600 text-left transition shadow-xs">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="text-magenta-600 text-sm">📍</span>
+            <span id="headerLocationText" class="text-xs font-semibold text-coffee-900 truncate">Casa — Av. El Bosque 412</span>
+          </div>
+          <span class="text-[10px] font-bold text-leaf-700 shrink-0">Cambiar ▾</span>
+        </button>
+      </div>
+
+      <!-- Navegación Desktop + Nivel + Carrito -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Insignia de Nivel Cafetero -->
+        <button onclick="switchMainTab('profile')" title="Ver tu progreso de Nivel Cafetero"
+          class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-babypink-100 border border-babypink-300 text-coffee-900 hover:bg-babypink-200/70 transition">
+          <span id="headerRankIcon" class="text-sm">☕</span>
+          <div class="text-left leading-tight">
+            <span class="block text-[9px] uppercase tracking-wider font-bold text-magenta-600">Nivel Actual</span>
+            <span id="headerRankName" class="block text-xs font-bold text-coffee-900">Primer Sorbo · Americano</span>
+          </div>
+        </button>
+
+        <!-- Botones de navegación desktop -->
+        <nav class="hidden lg:flex items-center gap-1 bg-beige-200/70 p-1 rounded-full">
+          <button id="navDesktopHome" onclick="switchMainTab('home')"
+            class="px-4 py-1.5 rounded-full text-xs font-bold bg-coffee-800 text-white transition">
+            Carta & Novedades
+          </button>
+          <button id="navDesktopProfile" onclick="switchMainTab('profile')"
+            class="px-4 py-1.5 rounded-full text-xs font-bold text-coffee-800 hover:bg-white/60 transition">
+            Mi Perfil & Nivel
+          </button>
+        </nav>
+
+        <!-- Botón Carrito -->
+        <button onclick="toggleCartDrawer(true)"
+          class="relative flex items-center gap-2 px-3.5 py-2 rounded-full bg-leaf-700 hover:bg-leaf-800 text-white text-xs font-bold shadow-md transition">
+          <span>🛍️</span>
+          <span class="hidden sm:inline">Pedido</span>
+          <span id="cartBadgeCount" class="px-1.5 py-0.5 rounded-full bg-magenta-500 text-white text-[11px] font-extrabold">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-5 pb-28 lg:pb-12">
+
+    <!-- ==================== VISTA 1: INICIO (CARTA, NOVEDADES Y CANJEABLES) ==================== -->
+    <section id="viewHome" class="space-y-7 animate-fade-up">
+
+      <!-- Banner Hero + Saludo + Nivel móvil + Suscripción VIP opcional -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <!-- Tarjeta de Bienvenida & Nivel -->
+        <div class="lg:col-span-7 bg-gradient-to-br from-coffee-800 via-coffee-900 to-leaf-800 text-beige-50 rounded-3xl p-6 sm:p-7 relative overflow-hidden shadow-xl flex flex-col justify-between">
+          <div class="absolute right-0 top-0 w-56 h-56 bg-magenta-500/20 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="relative z-10">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-babypink-200 text-xs font-bold">
+                <span id="heroRankIcon">☕</span>
+                <span>Rango: <strong id="heroRankTitle" class="text-white">Primer Sorbo · Americano</strong></span>
+              </span>
+              <span id="heroVipBadge" class="hidden px-3 py-1 rounded-full bg-magenta-500 text-white text-xs font-extrabold tracking-wide">
+                👑 MIEMBRO CLUB VIP
+              </span>
+            </div>
+
+            <h2 class="font-editorial text-2xl sm:text-3xl font-bold leading-snug">
+              ¡Hola, <span id="heroNickname" class="text-babypink-200">Barista Nocturno</span>!
+            </h2>
+            <p class="text-xs sm:text-sm text-beige-200 mt-1.5 max-w-xl">
+              Pide sin filas para recojo en tienda o delivery. Cada pedido te acerca al exclusivo rango <strong class="text-white">Maestro Tostador · Leyenda SCENTIA</strong>.
+            </p>
+          </div>
+
+          <!-- Barra de progreso rápido al siguiente nivel -->
+          <div class="relative z-10 mt-5 pt-4 border-t border-white/15">
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span id="heroOrdersCountText" class="font-semibold text-beige-100">0 pedidos completados</span>
+              <span id="heroNextRankText" class="text-babypink-200 font-bold">Faltan 2 para Crema Sedosa · Flat White</span>
+            </div>
+            <div class="w-full h-2.5 bg-white/15 rounded-full overflow-hidden">
+              <div id="heroRankProgressBar" class="h-full bg-gradient-to-r from-babypink-300 to-magenta-500 rounded-full transition-all duration-500" style="width: 15%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta Promocional Suscripción Opcional S/ 29.90/mes -->
+        <div class="lg:col-span-5 bg-babypink-100 border-2 border-magenta-500/30 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden shadow-md">
+          <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-magenta-500/10 pointer-events-none"></div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-magenta-600 text-white text-[10px] font-extrabold uppercase tracking-wider">
+                Opcional • Membresía
+              </span>
+              <span class="font-editorial font-extrabold text-xl text-magenta-700">S/ 29.90<span class="text-xs font-sans font-semibold text-coffee-700">/mes</span></span>
+            </div>
+            <h3 class="font-editorial text-xl font-bold text-coffee-900">SCENTIA Club VIP</h3>
+            <p class="text-xs text-coffee-700 mt-1 leading-relaxed">
+              No es obligatoria para pedir, pero si amas el café obtienes <strong>15% de descuento extra</strong> en toda la carta + <strong>envío gratis ilimitado</strong>.
+            </p>
+          </div>
+          <div class="mt-4 flex items-center gap-2">
+            <button id="btnToggleVipHero" onclick="toggleVipSubscription()"
+              class="w-full py-2.5 px-4 rounded-xl bg-magenta-600 hover:bg-magenta-700 text-white font-bold text-xs tracking-wide shadow-sm transition">
+              ✨ Activar SCENTIA Club VIP (S/ 29.90/mes)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DE NOVEDADES EN LA CAFETERÍA (EN PÁGINA PRINCIPAL) -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-widest text-magenta-600">Recién salido de barra</span>
+            <h3 class="font-editorial text-xl sm:text-2xl font-bold text-coffee-900">Novedades SCENTIA</h3>
+          </div>
+          <span class="text-xs text-coffee-600 hidden sm:inline">Actualizado esta semana</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <!-- Novedad 1 -->
+          <div class="bg-white border border-beige-300 rounded-2xl p-4 flex items-start gap-3.5 shadow-xs hover:border-leaf-700 transition">
+            <div class="w-12 h-12 rounded-2xl bg-leaf-700/10 text-leaf-700 flex items-center justify-center text-2xl shrink-0">
+              🧪
+            </div>
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded-md bg-leaf-700 text-white text-[10px] font-bold uppercase mb-1">Nuevo Método</span>
+              <h4 class="font-bold text-sm text-coffee-900">Extracción Origami Dripper</h4>
+              <p class="text-xs text-coffee-600 mt-0.5">Resalta notas florales y dulzor sedoso en nuestros granos de Villa Rica.</p>
+            </div>
+          </div>
+
+          <!-- Novedad 2 -->
+          <div class="bg-white border border-beige-300 rounded-2xl p-4 flex items-start gap-3.5 shadow-xs hover:border-magenta-500 transition">
+            <div class="w-12 h-12 rounded-2xl bg-babypink-100 text-magenta-600 flex items-center justify-center text-2xl shrink-0">
+              🍒
+            </div>
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded-md bg-magenta-600 text-white text-[10px] font-bold uppercase mb-1">Nuevo Sabor</span>
+              <h4 class="font-bold text-sm text-coffee-900">Sirope Artesanal de Cereza & Cacao</h4>
+              <p class="text-xs text-coffee-600 mt-0.5">Disponible ahora para personalizar cualquiera de tus lattes fríos o calientes.</p>
+            </div>
+          </div>
+
+          <!-- Novedad 3 -->
+          <div class="bg-white border border-beige-300 rounded-2xl p-4 flex items-start gap-3.5 shadow-xs hover:border-coffee-600 transition">
+            <div class="w-12 h-12 rounded-2xl bg-beige-200 text-coffee-800 flex items-center justify-center text-2xl shrink-0">
+              🌱
+            </div>
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded-md bg-coffee-800 text-white text-[10px] font-bold uppercase mb-1">Cosecha Micro-Lote</span>
+              <h4 class="font-bold text-sm text-coffee-900">Geisha Lavado — Jaén, Cajamarca</h4>
+              <p class="text-xs text-coffee-600 mt-0.5">Notas a jazmín, durazno blanco y miel de abeja. ¡Pídelo antes que se agote!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DE CUPONES CANJEABLES EN TIENDA FÍSICA (EN PÁGINA PRINCIPAL) -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-widest text-leaf-700">Beneficios por usar la app</span>
+            <h3 class="font-editorial text-xl sm:text-2xl font-bold text-coffee-900">Cupones Canjeables en Tienda Física</h3>
+          </div>
+          <span class="text-xs font-semibold text-coffee-600">Muestra el QR en barra</span>
+        </div>
+
+        <div id="couponsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <!-- Renderizado dinámico por JS -->
+        </div>
+      </div>
+
+      <!-- ==================== CATÁLOGO COMPLETO DE PRODUCTOS ==================== -->
+      <div id="menuSection" class="pt-2">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-5">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-widest text-magenta-600">48 creaciones artesanales</span>
+            <h3 class="font-editorial text-2xl sm:text-3xl font-bold text-coffee-900">Nuestra Carta SCENTIA</h3>
+          </div>
+
+          <!-- Buscador rápido -->
+          <div class="relative w-full md:w-72">
+            <input type="text" id="searchInput" oninput="renderMenu()" placeholder="Buscar café, matcha, cheesecake..."
+              class="w-full pl-9 pr-4 py-2.5 rounded-full bg-white border border-beige-300 text-xs font-medium text-coffee-900 focus:outline-none focus:border-leaf-700 shadow-xs" />
+            <span class="absolute left-3.5 top-2.5 text-sm">🔍</span>
+          </div>
+        </div>
+
+        <!-- Filtros por categoría -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-5">
+          <button onclick="setCategoryFilter('all')" data-cat="all"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-coffee-900 text-white shrink-0 transition">
+            Todos (48)
+          </button>
+          <button onclick="setCategoryFilter('temporada')" data-cat="temporada"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-babypink-100 text-magenta-700 border border-magenta-500/30 hover:bg-babypink-200 shrink-0 transition">
+            ✨ Bebidas de Temporada (3)
+          </button>
+          <button onclick="setCategoryFilter('calientes')" data-cat="calientes"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-white text-coffee-800 border border-beige-300 hover:border-coffee-600 shrink-0 transition">
+            ☕ Cafés Calientes (10)
+          </button>
+          <button onclick="setCategoryFilter('frias')" data-cat="frias"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-white text-coffee-800 border border-beige-300 hover:border-coffee-600 shrink-0 transition">
+            🧊 Cafés Fríos & Iced (10)
+          </button>
+          <button onclick="setCategoryFilter('postres')" data-cat="postres"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-white text-coffee-800 border border-beige-300 hover:border-coffee-600 shrink-0 transition">
+            🥐 Acompañamientos & Postres (25)
+          </button>
+        </div>
+
+        <!-- Grid de Productos -->
+        <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <!-- Renderizado dinámico por JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 2: PERFIL PERSONAL (NIVELES, RESEÑAS, EVENTOS, SUSCRIPCIÓN) ==================== -->
+    <section id="viewProfile" class="hidden space-y-7 animate-fade-up">
+
+      <!-- Cabecera del Perfil & Mapa de los 5 Niveles Cafeteros -->
+      <div class="bg-white border border-beige-300 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-beige-200">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-leaf-700 to-coffee-800 text-white flex items-center justify-center text-3xl shadow-md">
+              <span id="profileRankEmoji">☕</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h2 id="profileNickname" class="font-editorial text-2xl font-bold text-coffee-900">Barista Nocturno</h2>
+                <span id="profileVipTag" class="hidden px-2.5 py-0.5 rounded-full bg-magenta-600 text-white text-[10px] font-extrabold uppercase">
+                  👑 Club VIP Activo
+                </span>
+              </div>
+              <p id="profilePhone" class="text-xs text-coffee-600 mt-0.5">+51 987 654 321</p>
+              <p class="text-xs font-bold text-leaf-700 mt-1">
+                Rango actual: <span id="profileRankFull">Primer Sorbo · Americano</span> (<span id="profileTotalOrders">0</span> pedidos)
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openLocationModal()"
+              class="px-4 py-2 rounded-xl bg-beige-100 hover:bg-beige-200 text-coffee-900 text-xs font-bold border border-beige-300 transition">
+              📍 Mis Ubicaciones
+            </button>
+            <button id="btnProfileVip" onclick="toggleVipSubscription()"
+              class="px-4 py-2 rounded-xl bg-magenta-600 hover:bg-magenta-700 text-white text-xs font-bold shadow-sm transition">
+              👑 Unirme a Club VIP (S/ 29.90/mes)
+            </button>
+          </div>
+        </div>
+
+        <!-- Escalera de 5 Niveles Cafeteros -->
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-editorial text-lg font-bold text-coffee-900">Tu Camino del Grano (Niveles SCENTIA)</h3>
+            <span class="text-xs text-coffee-600">Sube de rango automáticamente con cada pedido</span>
+          </div>
+          <div id="ranksTimelineGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <!-- Renderizado dinámico por JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Inferior: Reservas de Eventos + Reseñas de Pedidos -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Reservas y Pedidos Anticipados para Eventos -->
+        <div class="lg:col-span-5 bg-white border border-beige-300 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-2.5 py-0.5 rounded-full bg-leaf-700/10 text-leaf-700 text-[10px] font-extrabold uppercase tracking-wider mb-2">
+              Catering & Reuniones
+            </span>
+            <h3 class="font-editorial text-xl font-bold text-coffee-900">Reservas y Pedidos para Eventos</h3>
+            <p class="text-xs text-coffee-600 mt-1 mb-4">
+              Agenda estaciones de filtrado en vivo, coffee breaks corporativos o cajas de postres artesanales con anticipación.
+            </p>
+
+            <form id="eventBookingForm" class="space-y-3">
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-coffee-800 mb-1">Tipo de evento</label>
+                <select id="eventType" class="w-full px-3 py-2 rounded-xl border border-beige-300 bg-beige-50 text-xs font-semibold text-coffee-900">
+                  <option value="Coffee Break Corporativo (15-30 pers.)">💼 Coffee Break Corporativo (15-30 pers.)</option>
+                  <option value="Barra de Filtrados V60 & Espresso en Vivo">☕ Barra de Filtrados V60 & Espresso en Vivo</option>
+                  <option value="Mesa Dulce & Brunch Privado">🥐 Mesa Dulce & Brunch Privado</option>
+                  <option value="Cata Privada de Café de Especialidad">🌱 Cata Privada de Café de Especialidad</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-[11px] font-bold uppercase text-coffee-800 mb-1">Fecha</label>
+                  <input type="date" id="eventDate" required
+                    class="w-full px-3 py-2 rounded-xl border border-beige-300 bg-beige-50 text-xs font-semibold text-coffee-900" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold uppercase text-coffee-800 mb-1">Invitados</label>
+                  <input type="number" id="eventGuests" min="5" max="150" value="20" required
+                    class="w-full px-3 py-2 rounded-xl border border-beige-300 bg-beige-50 text-xs font-semibold text-coffee-900" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-coffee-800 mb-1">Notas o selección anticipada</label>
+                <textarea id="eventNotes" rows="2" placeholder="Ej. Incluir opciones sin lactosa y mini cheesecakes de pistacho..."
+                  class="w-full px-3 py-2 rounded-xl border border-beige-300 bg-beige-50 text-xs text-coffee-900"></textarea>
+              </div>
+
+              <button type="submit"
+                class="w-full py-2.5 rounded-xl bg-leaf-700 hover:bg-leaf-800 text-white font-bold text-xs transition shadow-sm">
+                📅 Solicitar Reserva Anticipada
+              </button>
+            </form>
+          </div>
+
+          <div id="eventBookingsList" class="mt-4 pt-3 border-t border-beige-200 space-y-2">
+            <!-- Reservas registradas -->
+          </div>
+        </div>
+
+        <!-- Historial de Pedidos y Reseñas de 5 Estrellas -->
+        <div class="lg:col-span-7 bg-white border border-beige-300 rounded-3xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full bg-babypink-100 text-magenta-600 text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                Tu voz mejora nuestra barra
+              </span>
+              <h3 class="font-editorial text-xl font-bold text-coffee-900">Mis Pedidos & Reseñas (5 Estrellas)</h3>
+            </div>
+            <span class="text-xs text-coffee-600">Califica tus compras</span>
+          </div>
+
+          <div id="ordersHistoryContainer" class="space-y-4">
+            <!-- Renderizado dinámico por JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== BARRA INFERIOR MÓVIL ==================== -->
+  <nav class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur-md border-t border-beige-300 px-4 py-2 flex items-center justify-around shadow-lg">
+    <button id="navMobileHome" onclick="switchMainTab('home')"
+      class="flex flex-col items-center gap-0.5 text-leaf-700 font-bold text-xs">
+      <span class="text-lg">☕</span>
+      <span>Carta & Ofertas</span>
+    </button>
+    <button onclick="toggleCartDrawer(true)"
+      class="flex flex-col items-center gap-0.5 text-coffee-700 font-semibold text-xs relative">
+      <span class="text-lg">🛍️</span>
+      <span>Mi Pedido</span>
+      <span id="mobileCartBadge" class="absolute -top-1 -right-2 px-1.5 py-0.2 rounded-full bg-magenta-600 text-white text-[10px] font-extrabold">0</span>
+    </button>
+    <button id="navMobileProfile" onclick="switchMainTab('profile')"
+      class="flex flex-col items-center gap-0.5 text-coffee-700 font-semibold text-xs">
+      <span class="text-lg">👑</span>
+      <span>Perfil & Nivel</span>
+    </button>
+  </nav>
+
+  <!-- ==================== MODAL DE PERSONALIZACIÓN DE PRODUCTO ==================== -->
+  <div id="productModal" class="hidden fixed inset-0 z-50 bg-coffee-900/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-beige-50 w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl border border-beige-300 animate-fade-up max-h-[92vh] flex flex-col">
+      <div class="relative h-52 sm:h-56 bg-coffee-800 shrink-0">
+        <img id="modalProdImg" src="" alt="" class="w-full h-full object-cover" />
+        <button onclick="closeProductModal()"
+          class="absolute top-3 right-3 w-9 h-9 rounded-full bg-coffee-900/75 text-white flex items-center justify-center font-bold hover:bg-coffee-900 transition">
+          ✕
+        </button>
+        <div id="modalProdBadge" class="absolute top-3 left-3 px-3 py-1 rounded-full bg-magenta-600 text-white text-xs font-extrabold shadow">
+          🔥 El más pedido
+        </div>
+        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-coffee-900/90 via-coffee-900/50 to-transparent p-4 text-white">
+          <div class="flex items-center justify-between gap-2">
+            <h3 id="modalProdName" class="font-editorial text-xl font-bold">Nombre Producto</h3>
+            <span id="modalProdRating" class="px-2 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs text-xs font-bold">★ 4.9 (128)</span>
+          </div>
+          <p id="modalProdDesc" class="text-xs text-beige-200 line-clamp-2 mt-0.5">Descripción</p>
+        </div>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 flex-1">
+        <!-- Opciones de personalización para bebidas -->
+        <div id="drinkCustomOptions" class="space-y-4">
+          <!-- Tamaño -->
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-coffee-800 mb-2">1. Elige el Tamaño</label>
+            <div class="grid grid-cols-3 gap-2" id="sizeOptionsGroup">
+              <button type="button" onclick="selectCustomOption('size', 'Regular (12 oz)', 0)" data-val="Regular (12 oz)"
+                class="opt-btn-size p-2.5 rounded-xl border-2 border-leaf-700 bg-leaf-700/10 text-left transition">
+                <span class="block text-xs font-bold text-coffee-900">Regular</span>
+                <span class="block text-[10px] text-coffee-600">12 oz • Base</span>
+              </button>
+              <button type="button" onclick="selectCustomOption('size', 'Grande (16 oz)', 2.5)" data-val="Grande (16 oz)"
+                class="opt-btn-size p-2.5 rounded-xl border border-beige-300 bg-white text-left transition">
+                <span class="block text-xs font-bold text-coffee-900">Grande</span>
+                <span class="block text-[10px] text-magenta-600 font-bold">+ S/ 2.50</span>
+              </button>
+              <button type="button" onclick="selectCustomOption('size', 'Esencia XL (20 oz)', 4.5)" data-val="Esencia XL (20 oz)"
+                class="opt-btn-size p-2.5 rounded-xl border border-beige-300 bg-white text-left transition">
+                <span class="block text-xs font-bold text-coffee-900">Esencia XL</span>
+                <span class="block text-[10px] text-magenta-600 font-bold">+ S/ 4.50</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tipo de Leche -->
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-coffee-800 mb-2">2. Tipo de Leche</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="milkOptionsGroup">
+              <button type="button" onclick="selectCustomOption('milk', 'Entera Fresca', 0)" data-val="Entera Fresca"
+                class="opt-btn-milk p-2 rounded-xl border-2 border-leaf-700 bg-leaf-700/10 text-xs font-bold text-coffee-900">
+                Entera Fresca
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Deslactosada', 0)" data-val="Deslactosada"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Deslactosada
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Avena Barista', 2.0)" data-val="Avena Barista"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Avena (+S/ 2)
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Almendras', 2.0)" data-val="Almendras"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Almendras (+S/ 2)
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Coco Orgánico', 2.0)" data-val="Coco Orgánico"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Coco (+S/ 2)
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Sin Leche (Puro)', 0)" data-val="Sin Leche (Puro)"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Sin Leche
+              </button>
+            </div>
+          </div>
+
+          <!-- Nivel de Azúcar / Endulzante -->
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-coffee-800 mb-2">3. Nivel de Azúcar / Dulzor</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="sugarOptionsGroup">
+              <button type="button" onclick="selectCustomOption('sugar', 'Sin Azúcar (0%)', 0)" data-val="Sin Azúcar (0%)"
+                class="opt-btn-sugar p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Sin Azúcar
+              </button>
+              <button type="button" onclick="selectCustomOption('sugar', 'Poco Dulce (50%)', 0)" data-val="Poco Dulce (50%)"
+                class="opt-btn-sugar p-2 rounded-xl border-2 border-leaf-700 bg-leaf-
