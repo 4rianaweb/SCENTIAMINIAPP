@@ -90,7 +90,7 @@
 
       <div class="text-center mb-5 relative">
         <span class="inline-block px-3 py-1 rounded-full bg-babypink-100 text-magenta-600 text-xs font-bold tracking-wider uppercase mb-2">
-          Acceso Simulado • Demo Interactiva
+          Acceso Simulado • Demo Presentación
         </span>
         <h1 class="font-editorial text-3xl font-bold text-coffee-900 tracking-tight">SCENTIA</h1>
         <p class="text-xs italic text-coffee-600 mt-1">"No es solo café, es una esencia diferente"</p>
@@ -99,13 +99,13 @@
       <form id="simulatedLoginForm" class="space-y-3.5 relative">
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-coffee-800 mb-1">Correo electrónico o Celular</label>
-          <input type="text" id="loginEmailOrPhone" placeholder="cliente@scentia.pe o 987 654 321"
+          <input type="text" id="loginEmailOrPhone" placeholder="Escribe cualquier correo o número..."
             class="w-full px-3.5 py-2.5 rounded-xl border border-beige-300 bg-white text-sm text-coffee-900 focus:outline-none focus:border-leaf-700"
             value="camila.cafe@scentia.pe" />
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-coffee-800 mb-1">Contraseña (cualquiera es válida)</label>
+          <label class="block text-xs font-bold uppercase tracking-wider text-coffee-800 mb-1">Contraseña (acepta cualquiera)</label>
           <input type="password" id="loginPassword" placeholder="••••••••"
             class="w-full px-3.5 py-2.5 rounded-xl border border-beige-300 bg-white text-sm text-coffee-900 focus:outline-none focus:border-leaf-700"
             value="scentia2026" />
@@ -141,7 +141,7 @@
           </button>
           <button type="button" onclick="enterAsGuest()"
             class="w-full py-2.5 rounded-xl bg-beige-200/80 hover:bg-beige-200 text-coffee-900 font-bold text-xs transition">
-            Entrar directo como Invitado (sin datos)
+            Entrar directo sin iniciar sesión (Invitado)
           </button>
         </div>
       </form>
@@ -177,4 +177,1543 @@
       <!-- Navegación Desktop + Nivel + Login Simulado + Carrito -->
       <div class="flex items-center gap-2">
         <!-- Insignia de Nivel Cafetero -->
-        <button
+        <button onclick="switchMainTab('profile')" title="Ver tu progreso de Nivel Cafetero"
+          class="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-babypink-100 border border-babypink-300 text-coffee-900 hover:bg-babypink-200/70 transition">
+          <span id="headerRankIcon" class="text-sm">☕</span>
+          <div class="text-left leading-tight">
+            <span class="block text-[9px] uppercase tracking-wider font-bold text-magenta-600">Nivel Actual</span>
+            <span id="headerRankName" class="block text-xs font-bold text-coffee-900">Primer Sorbo · Americano</span>
+          </div>
+        </button>
+
+        <!-- Botones de navegación desktop -->
+        <nav class="hidden md:flex items-center gap-1 bg-beige-200/70 p-1 rounded-full">
+          <button id="navDesktopHome" onclick="switchMainTab('home')"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-coffee-800 text-white transition">
+            Carta & Novedades
+          </button>
+          <button id="navDesktopProfile" onclick="switchMainTab('profile')"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold text-coffee-800 hover:bg-white/60 transition">
+            Mi Perfil & Nivel
+          </button>
+        </nav>
+
+        <!-- Botón Iniciar Sesión Simulado -->
+        <button id="btnHeaderLogin" onclick="openLoginModal()"
+          class="px-3 py-2 rounded-full bg-white hover:bg-beige-200 border border-beige-300 text-coffee-900 text-xs font-bold transition flex items-center gap-1.5 shrink-0">
+          <span>👤</span>
+          <span id="headerLoginLabel">Iniciar Sesión</span>
+        </button>
+
+        <!-- Botón Carrito -->
+        <button onclick="toggleCartDrawer(true)"
+          class="relative flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-leaf-700 hover:bg-leaf-800 text-white text-xs font-bold shadow-md transition shrink-0">
+          <span>🛍️</span>
+          <span class="hidden sm:inline">Pedido</span>
+          <span id="cartBadgeCount" class="px-1.5 py-0.5 rounded-full bg-magenta-500 text-white text-[11px] font-extrabold">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-5 pb-28 md:pb-12">
+
+    <!-- ==================== VISTA 1: INICIO (CARTA, NOVEDADES Y CANJEABLES) ==================== -->
+    <section id="viewHome" class="space-y-7 animate-fade-up">
+
+      <!-- Banner Hero + Saludo + Nivel + Suscripción VIP opcional -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <!-- Tarjeta de Bienvenida & Nivel -->
+        <div class="lg:col-span-7 bg-gradient-to-br from-coffee-800 via-coffee-900 to-leaf-800 text-beige-50 rounded-3xl p-6 sm:p-7 relative overflow-hidden shadow-xl flex flex-col justify-between">
+          <div class="absolute right-0 top-0 w-56 h-56 bg-magenta-500/20 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="relative z-10">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-babypink-200 text-xs font-bold">
+                <span id="heroRankIcon">☕</span>
+                <span>Rango: <strong id="heroRankTitle" class="text-white">Primer Sorbo · Americano</strong></span>
+              </span>
+              <span id="heroVipBadge" class="hidden px-3 py-1 rounded-full bg-magenta-500 text-white text-xs font-extrabold tracking-wide">
+                👑 MIEMBRO CLUB VIP
+              </span>
+            </div>
+
+            <h2 class="font-editorial text-2xl sm:text-3xl font-bold leading-snug">
+              ¡Hola, <span id="heroNickname" class="text-babypink-200">Barista Nocturno</span>!
+            </h2>
+            <p class="text-xs sm:text-sm text-beige-200 mt-1.5 max-w-xl">
+              Pide sin filas para recojo en tienda o delivery. Cada pedido te acerca al exclusivo rango <strong class="text-white">Maestro Tostador · Leyenda SCENTIA</strong>.
+            </p>
+          </div>
+
+          <!-- Barra de progreso rápido al siguiente nivel -->
+          <div class="relative z-10 mt-5 pt-4 border-t border-white/15">
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span id="heroOrdersCountText" class="font-semibold text-beige-100">1 pedido completado</span>
+              <span id="heroNextRankText" class="text-babypink-200 font-bold">Falta 1 para Crema Sedosa · Flat White</span>
+            </div>
+            <div class="w-full h-2.5 bg-white/15 rounded-full overflow-hidden">
+              <div id="heroRankProgressBar" class="h-full bg-gradient-to-r from-babypink-300 to-magenta-500 rounded-full transition-all duration-500" style="width: 50%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta Promocional Suscripción Opcional S/ 29.90/mes -->
+        <div class="lg:col-span-5 bg-babypink-100 border-2 border-magenta-500/30 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden shadow-md">
+          <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-magenta-500/10 pointer-events-none"></div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-magenta-600 text-white text-[10px] font-extrabold uppercase tracking-wider">
+                Opcional • Membresía
+              </span>
+              <span class="font-editorial font-extrabold text-xl text-magenta-700">S/ 29.90<span class="text-xs font-sans font-semibold text-coffee-700">/mes</span></span>
+            </div>
+            <h3 class="font-editorial text-xl font-bold text-coffee-900">SCENTIA Club VIP</h3>
+            <p class="text-xs text-coffee-700 mt-1 leading-relaxed">
+              No es obligatoria para pedir, pero si amas el café obtienes <strong>15% de descuento extra</strong> en toda la carta + <strong>envío gratis ilimitado</strong>.
+            </p>
+          </div>
+          <div class="mt-4 flex items-center gap-2">
+            <button id="btnToggleVipHero" onclick="toggleVipSubscription()"
+              class="w-full py-2.5 px-4 rounded-xl bg-magenta-600 hover:bg-magenta-700 text-white font-bold text-xs tracking-wide shadow-sm transition">
+              ✨ Activar SCENTIA Club VIP (S/ 29.90/mes)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DE NOVEDADES EN LA CAFETERÍA -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-widest text-magenta-600">Recién salido de barra</span>
+            <h3 class="font-editorial text-xl sm:text-2xl font-bold text-coffee-900">Novedades SCENTIA</h3>
+          </div>
+          <span class="text-xs text-coffee-600 hidden sm:inline">Actualizado esta semana</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <div class="bg-white border border-beige-300 rounded-2xl p-4 flex items-start gap-3.5 shadow-xs hover:border-leaf-700 transition">
+            <div class="w-12 h-12 rounded-2xl bg-leaf-700/10 text-leaf-700 flex items-center justify-center text-2xl shrink-0">
+              🧪
+            </div>
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded-md bg-leaf-700 text-white text-[10px] font-bold uppercase mb-1">Nuevo Método</span>
+              <h4 class="font-bold text-sm text-coffee-900">Extracción Origami Dripper</h4>
+              <p class="text-xs text-coffee-600 mt-0.5">Resalta notas florales y dulzor sedoso en nuestros granos de Villa Rica.</p>
+            </div>
+          </div>
+
+          <div class="bg-white border border-beige-300 rounded-2xl p-4 flex items-start gap-3.5 shadow-xs hover:border-magenta-500 transition">
+            <div class="w-12 h-12 rounded-2xl bg-babypink-100 text-magenta-600 flex items-center justify-center text-2xl shrink-0">
+              🍒
+            </div>
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded-md bg-magenta-600 text-white text-[10px] font-bold uppercase mb-1">Nuevo Sabor</span>
+              <h4 class="font-bold text-sm text-coffee-900">Sirope Artesanal de Cereza & Cacao</h4>
+              <p class="text-xs text-coffee-600 mt-0.5">Disponible ahora para personalizar cualquiera de tus lattes fríos o calientes.</p>
+            </div>
+          </div>
+
+          <div class="bg-white border border-beige-300 rounded-2xl p-4 flex items-start gap-3.5 shadow-xs hover:border-coffee-600 transition">
+            <div class="w-12 h-12 rounded-2xl bg-beige-200 text-coffee-800 flex items-center justify-center text-2xl shrink-0">
+              🌱
+            </div>
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded-md bg-coffee-800 text-white text-[10px] font-bold uppercase mb-1">Cosecha Micro-Lote</span>
+              <h4 class="font-bold text-sm text-coffee-900">Geisha Lavado — Jaén, Cajamarca</h4>
+              <p class="text-xs text-coffee-600 mt-0.5">Notas a jazmín, durazno blanco y miel de abeja. ¡Pídelo antes que se agote!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DE CUPONES CANJEABLES EN TIENDA FÍSICA -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-widest text-leaf-700">Beneficios por usar la app</span>
+            <h3 class="font-editorial text-xl sm:text-2xl font-bold text-coffee-900">Cupones Canjeables en Tienda Física</h3>
+          </div>
+          <span class="text-xs font-semibold text-coffee-600">Muestra el QR en barra</span>
+        </div>
+
+        <div id="couponsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <!-- Renderizado dinámico por JS -->
+        </div>
+      </div>
+
+      <!-- ==================== CATÁLOGO COMPLETO DE PRODUCTOS ==================== -->
+      <div id="menuSection" class="pt-2">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-5">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-widest text-magenta-600">48 creaciones artesanales</span>
+            <h3 class="font-editorial text-2xl sm:text-3xl font-bold text-coffee-900">Nuestra Carta SCENTIA</h3>
+          </div>
+
+          <div class="relative w-full md:w-72">
+            <input type="text" id="searchInput" oninput="renderMenu()" placeholder="Buscar café, matcha, cheesecake..."
+              class="w-full pl-9 pr-4 py-2.5 rounded-full bg-white border border-beige-300 text-xs font-medium text-coffee-900 focus:outline-none focus:border-leaf-700 shadow-xs" />
+            <span class="absolute left-3.5 top-2.5 text-sm">🔍</span>
+          </div>
+        </div>
+
+        <!-- Filtros por categoría -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-5">
+          <button onclick="setCategoryFilter('all')" data-cat="all"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-coffee-900 text-white shrink-0 transition">
+            Todos (48)
+          </button>
+          <button onclick="setCategoryFilter('temporada')" data-cat="temporada"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-babypink-100 text-magenta-700 border border-magenta-500/30 hover:bg-babypink-200 shrink-0 transition">
+            ✨ Bebidas de Temporada (3)
+          </button>
+          <button onclick="setCategoryFilter('calientes')" data-cat="calientes"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-white text-coffee-800 border border-beige-300 hover:border-coffee-600 shrink-0 transition">
+            ☕ Cafés Calientes (10)
+          </button>
+          <button onclick="setCategoryFilter('frias')" data-cat="frias"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-white text-coffee-800 border border-beige-300 hover:border-coffee-600 shrink-0 transition">
+            🧊 Cafés Fríos & Iced (10)
+          </button>
+          <button onclick="setCategoryFilter('postres')" data-cat="postres"
+            class="cat-pill px-4 py-2 rounded-full text-xs font-bold bg-white text-coffee-800 border border-beige-300 hover:border-coffee-600 shrink-0 transition">
+            🥐 Acompañamientos & Postres (25)
+          </button>
+        </div>
+
+        <!-- Grid de Productos -->
+        <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <!-- Renderizado dinámico por JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VISTA 2: PERFIL PERSONAL (NIVELES, RESEÑAS, EVENTOS, SUSCRIPCIÓN) ==================== -->
+    <section id="viewProfile" class="hidden space-y-7 animate-fade-up">
+
+      <!-- Cabecera del Perfil & Mapa de los 5 Niveles Cafeteros -->
+      <div class="bg-white border border-beige-300 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-beige-200">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-leaf-700 to-coffee-800 text-white flex items-center justify-center text-3xl shadow-md">
+              <span id="profileRankEmoji">☕</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h2 id="profileNickname" class="font-editorial text-2xl font-bold text-coffee-900">Barista Nocturno</h2>
+                <span id="profileVipTag" class="hidden px-2.5 py-0.5 rounded-full bg-magenta-600 text-white text-[10px] font-extrabold uppercase">
+                  👑 Club VIP Activo
+                </span>
+              </div>
+              <p id="profilePhone" class="text-xs text-coffee-600 mt-0.5">camila.cafe@scentia.pe</p>
+              <p class="text-xs font-bold text-leaf-700 mt-1">
+                Rango actual: <span id="profileRankFull">Primer Sorbo · Americano</span> (<span id="profileTotalOrders">1</span> pedido)
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openLoginModal()"
+              class="px-4 py-2 rounded-xl bg-beige-100 hover:bg-beige-200 text-coffee-900 text-xs font-bold border border-beige-300 transition">
+              👤 Cambiar Cuenta
+            </button>
+            <button onclick="openLocationModal()"
+              class="px-4 py-2 rounded-xl bg-beige-100 hover:bg-beige-200 text-coffee-900 text-xs font-bold border border-beige-300 transition">
+              📍 Mis Ubicaciones
+            </button>
+            <button id="btnProfileVip" onclick="toggleVipSubscription()"
+              class="px-4 py-2 rounded-xl bg-magenta-600 hover:bg-magenta-700 text-white text-xs font-bold shadow-sm transition">
+              👑 Unirme a Club VIP (S/ 29.90/mes)
+            </button>
+          </div>
+        </div>
+
+        <!-- Escalera de 5 Niveles Cafeteros -->
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-editorial text-lg font-bold text-coffee-900">Tu Camino del Grano (Niveles SCENTIA)</h3>
+            <span class="text-xs text-coffee-600">Sube de rango automáticamente con cada pedido</span>
+          </div>
+          <div id="ranksTimelineGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <!-- Renderizado dinámico por JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Inferior: Reservas de Eventos + Reseñas de Pedidos -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Reservas y Pedidos Anticipados para Eventos -->
+        <div class="lg:col-span-5 bg-white border border-beige-300 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-2.5 py-0.5 rounded-full bg-leaf-700/10 text-leaf-700 text-[10px] font-extrabold uppercase tracking-wider mb-2">
+              Catering & Reuniones
+            </span>
+            <h3 class="font-editorial text-xl font-bold text-coffee-900">Reservas y Pedidos para Eventos</h3>
+            <p class="text-xs text-coffee-600 mt-1 mb-4">
+              Agenda estaciones de filtrado en vivo, coffee breaks corporativos o cajas de postres artesanales con anticipación.
+            </p>
+
+            <form id="eventBookingForm" class="space-y-3">
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-coffee-800 mb-1">Tipo de evento</label>
+                <select id="eventType" class="w-full px-3 py-2 rounded-xl border border-beige-300 bg-beige-50 text-xs font-semibold text-coffee-900">
+                  <option value="Coffee Break Corporativo (15-30 pers.)">💼 Coffee Break Corporativo (15-30 pers.)</option>
+                  <option value="Barra de Filtrados V60 & Espresso en Vivo">☕ Barra de Filtrados V60 & Espresso en Vivo</option>
+                  <option value="Mesa Dulce & Brunch Privado">🥐 Mesa Dulce & Brunch Privado</option>
+                  <option value="Cata Privada de Café de Especialidad">🌱 Cata Privada de Café de Especialidad</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-[11px] font-bold uppercase text-coffee-800 mb-1">Fecha</label>
+                  <input type="date" id="eventDate" required
+                    class="w-full px-3 py-2 rounded-xl border border-beige-300 bg-beige-50 text-xs font-semibold text-coffee-900" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold uppercase text-coffee-800 mb-1">Invitados</label>
+                  <input type="number" id="eventGuests" min="5" max="150" value="20" required
+                    class="w-full px-3 py-2 rounded-xl border border-beige-300 bg-beige-50 text-xs font-semibold text-coffee-900" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-coffee-800 mb-1">Notas o selección anticipada</label>
+                <textarea id="eventNotes" rows="2" placeholder="Ej. Incluir opciones sin lactosa y mini cheesecakes de pistacho..."
+                  class="w-full px-3 py-2 rounded-xl border border-beige-300 bg-beige-50 text-xs text-coffee-900"></textarea>
+              </div>
+
+              <button type="submit"
+                class="w-full py-2.5 rounded-xl bg-leaf-700 hover:bg-leaf-800 text-white font-bold text-xs transition shadow-sm">
+                📅 Solicitar Reserva Anticipada
+              </button>
+            </form>
+          </div>
+
+          <div id="eventBookingsList" class="mt-4 pt-3 border-t border-beige-200 space-y-2">
+            <!-- Reservas registradas -->
+          </div>
+        </div>
+
+        <!-- Historial de Pedidos y Reseñas de 5 Estrellas -->
+        <div class="lg:col-span-7 bg-white border border-beige-300 rounded-3xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full bg-babypink-100 text-magenta-600 text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                Tu voz mejora nuestra barra
+              </span>
+              <h3 class="font-editorial text-xl font-bold text-coffee-900">Mis Pedidos & Reseñas (5 Estrellas)</h3>
+            </div>
+            <span class="text-xs text-coffee-600">Califica tus compras</span>
+          </div>
+
+          <div id="ordersHistoryContainer" class="space-y-4">
+            <!-- Renderizado dinámico por JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== BARRA INFERIOR MÓVIL ==================== -->
+  <nav class="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur-md border-t border-beige-300 px-4 py-2 flex items-center justify-around shadow-lg">
+    <button id="navMobileHome" onclick="switchMainTab('home')"
+      class="flex flex-col items-center gap-0.5 text-leaf-700 font-bold text-xs">
+      <span class="text-lg">☕</span>
+      <span>Carta & Ofertas</span>
+    </button>
+    <button onclick="toggleCartDrawer(true)"
+      class="flex flex-col items-center gap-0.5 text-coffee-700 font-semibold text-xs relative">
+      <span class="text-lg">🛍️</span>
+      <span>Mi Pedido</span>
+      <span id="mobileCartBadge" class="absolute -top-1 -right-2 px-1.5 py-0.2 rounded-full bg-magenta-600 text-white text-[10px] font-extrabold">0</span>
+    </button>
+    <button id="navMobileProfile" onclick="switchMainTab('profile')"
+      class="flex flex-col items-center gap-0.5 text-coffee-700 font-semibold text-xs">
+      <span class="text-lg">👑</span>
+      <span>Perfil & Nivel</span>
+    </button>
+  </nav>
+
+  <!-- ==================== MODAL DE PERSONALIZACIÓN DE PRODUCTO ==================== -->
+  <div id="productModal" class="hidden fixed inset-0 z-50 bg-coffee-900/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-beige-50 w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl border border-beige-300 animate-fade-up max-h-[92vh] flex flex-col">
+      <div class="relative h-52 sm:h-56 bg-coffee-800 shrink-0">
+        <img id="modalProdImg" src="" alt="" class="w-full h-full object-cover" />
+        <button onclick="closeProductModal()"
+          class="absolute top-3 right-3 w-9 h-9 rounded-full bg-coffee-900/75 text-white flex items-center justify-center font-bold hover:bg-coffee-900 transition">
+          ✕
+        </button>
+        <div id="modalProdBadge" class="absolute top-3 left-3 px-3 py-1 rounded-full bg-magenta-600 text-white text-xs font-extrabold shadow">
+          🔥 El más pedido
+        </div>
+        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-coffee-900/90 via-coffee-900/50 to-transparent p-4 text-white">
+          <div class="flex items-center justify-between gap-2">
+            <h3 id="modalProdName" class="font-editorial text-xl font-bold">Nombre Producto</h3>
+            <span id="modalProdRating" class="px-2 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs text-xs font-bold">★ 4.9 (128)</span>
+          </div>
+          <p id="modalProdDesc" class="text-xs text-beige-200 line-clamp-2 mt-0.5">Descripción</p>
+        </div>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 flex-1">
+        <div id="drinkCustomOptions" class="space-y-4">
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-coffee-800 mb-2">1. Elige el Tamaño</label>
+            <div class="grid grid-cols-3 gap-2" id="sizeOptionsGroup">
+              <button type="button" onclick="selectCustomOption('size', 'Regular (12 oz)', 0)" data-val="Regular (12 oz)"
+                class="opt-btn-size p-2.5 rounded-xl border-2 border-leaf-700 bg-leaf-700/10 text-left transition">
+                <span class="block text-xs font-bold text-coffee-900">Regular</span>
+                <span class="block text-[10px] text-coffee-600">12 oz • Base</span>
+              </button>
+              <button type="button" onclick="selectCustomOption('size', 'Grande (16 oz)', 2.5)" data-val="Grande (16 oz)"
+                class="opt-btn-size p-2.5 rounded-xl border border-beige-300 bg-white text-left transition">
+                <span class="block text-xs font-bold text-coffee-900">Grande</span>
+                <span class="block text-[10px] text-magenta-600 font-bold">+ S/ 2.50</span>
+              </button>
+              <button type="button" onclick="selectCustomOption('size', 'Esencia XL (20 oz)', 4.5)" data-val="Esencia XL (20 oz)"
+                class="opt-btn-size p-2.5 rounded-xl border border-beige-300 bg-white text-left transition">
+                <span class="block text-xs font-bold text-coffee-900">Esencia XL</span>
+                <span class="block text-[10px] text-magenta-600 font-bold">+ S/ 4.50</span>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-coffee-800 mb-2">2. Tipo de Leche</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="milkOptionsGroup">
+              <button type="button" onclick="selectCustomOption('milk', 'Entera Fresca', 0)" data-val="Entera Fresca"
+                class="opt-btn-milk p-2 rounded-xl border-2 border-leaf-700 bg-leaf-700/10 text-xs font-bold text-coffee-900">
+                Entera Fresca
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Deslactosada', 0)" data-val="Deslactosada"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Deslactosada
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Avena Barista', 2.0)" data-val="Avena Barista"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Avena (+S/ 2)
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Almendras', 2.0)" data-val="Almendras"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Almendras (+S/ 2)
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Coco Orgánico', 2.0)" data-val="Coco Orgánico"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Coco (+S/ 2)
+              </button>
+              <button type="button" onclick="selectCustomOption('milk', 'Sin Leche (Puro)', 0)" data-val="Sin Leche (Puro)"
+                class="opt-btn-milk p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Sin Leche
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wider text-coffee-800 mb-2">3. Nivel de Azúcar / Dulzor</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="sugarOptionsGroup">
+              <button type="button" onclick="selectCustomOption('sugar', 'Sin Azúcar (0%)', 0)" data-val="Sin Azúcar (0%)"
+                class="opt-btn-sugar p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Sin Azúcar
+              </button>
+              <button type="button" onclick="selectCustomOption('sugar', 'Poco Dulce (50%)', 0)" data-val="Poco Dulce (50%)"
+                class="opt-btn-sugar p-2 rounded-xl border-2 border-leaf-700 bg-leaf-700/10 text-xs font-bold text-coffee-900">
+                Poco (50%)
+              </button>
+              <button type="button" onclick="selectCustomOption('sugar', 'Normal (100%)', 0)" data-val="Normal (100%)"
+                class="opt-btn-sugar p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Normal
+              </button>
+              <button type="button" onclick="selectCustomOption('sugar', 'Panela / Stevia', 0)" data-val="Panela / Stevia"
+                class="opt-btn-sugar p-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+                Panela / Stevia
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="pastryCustomOptions" class="hidden space-y-3">
+          <label class="block text-xs font-extrabold uppercase tracking-wider text-coffee-800">Preferencia de servido</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="selectCustomOption('pastryTemp', 'Tibio recién horneado', 0)" data-val="Tibio recién horneado"
+              class="opt-btn-pastry p-2.5 rounded-xl border-2 border-leaf-700 bg-leaf-700/10 text-xs font-bold text-coffee-900">
+              🔥 Tibio / Horneado
+            </button>
+            <button type="button" onclick="selectCustomOption('pastryTemp', 'Temperatura ambiente / Frío', 0)" data-val="Temperatura ambiente / Frío"
+              class="opt-btn-pastry p-2.5 rounded-xl border border-beige-300 bg-white text-xs font-semibold text-coffee-800">
+              ❄️ Fresco / Ambiente
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-coffee-800 mb-1">Nota para el barista (opcional)</label>
+          <input type="text" id="modalProdNote" placeholder="Ej. Extra caliente, canela encima, servilletas extra..."
+            class="w-full px-3.5 py-2 rounded-xl border border-beige-300 bg-white text-xs text-coffee-900 focus:outline-none focus:border-leaf-700" />
+        </div>
+      </div>
+
+      <div class="p-4 bg-white border-t border-beige-200 flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center border border-beige-300 rounded-xl overflow-hidden">
+          <button type="button" onclick="changeModalQty(-1)" class="px-3 py-2 bg-beige-100 hover:bg-beige-200 font-bold text-coffee-900">−</button>
+          <span id="modalProdQty" class="px-3.5 py-2 text-sm font-extrabold text-coffee-900">1</span>
+          <button type="button" onclick="changeModalQty(1)" class="px-3 py-2 bg-beige-100 hover:bg-beige-200 font-bold text-coffee-900">+</button>
+        </div>
+        <button type="button" onclick="addConfiguredProductToCart()"
+          class="flex-1 py-3 px-4 rounded-xl bg-leaf-700 hover:bg-leaf-800 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+          <span>Agregar al pedido</span>
+          <span>•</span>
+          <span id="modalTotalPrice">S/ 14.00</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DRAWER DEL CARRITO Y PASARELA DE PAGO ==================== -->
+  <div id="cartDrawer" class="hidden fixed inset-0 z-50 bg-coffee-900/70 backdrop-blur-xs flex justify-end">
+    <div class="bg-beige-50 w-full max-w-md h-full flex flex-col shadow-2xl animate-fade-up">
+      <div class="p-5 bg-white border-b border-beige-200 flex items-center justify-between">
+        <div>
+          <h3 class="font-editorial text-xl font-bold text-coffee-900">Tu Pedido SCENTIA</h3>
+          <p class="text-xs text-coffee-600">Elige entrega y método de pago</p>
+        </div>
+        <button onclick="toggleCartDrawer(false)" class="w-9 h-9 rounded-full bg-beige-100 hover:bg-beige-200 font-bold text-coffee-900">✕</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-5 space-y-5">
+        <div class="grid grid-cols-2 gap-2 bg-beige-200/70 p-1 rounded-2xl">
+          <button id="btnModeDelivery" onclick="setDeliveryMode('delivery')"
+            class="py-2 rounded-xl text-xs font-bold bg-coffee-900 text-white transition">
+            🛵 Delivery
+          </button>
+          <button id="btnModePickup" onclick="setDeliveryMode('pickup')"
+            class="py-2 rounded-xl text-xs font-bold text-coffee-800 transition">
+            🏪 Recojo en Tienda
+          </button>
+        </div>
+
+        <div id="deliveryAddressBox" class="bg-white border border-beige-300 rounded-2xl p-3 flex items-center justify-between">
+          <div class="min-w-0 pr-2">
+            <span class="block text-[10px] font-bold uppercase text-leaf-700" id="deliveryBoxLabel">Entregar en:</span>
+            <span class="block text-xs font-bold text-coffee-900 truncate" id="deliveryBoxAddress">Casa — Av. El Bosque 412</span>
+          </div>
+          <button onclick="openLocationModal()" class="text-xs font-bold text-magenta-600 shrink-0">Cambiar</button>
+        </div>
+
+        <div id="cartItemsList" class="space-y-3">
+          <!-- Renderizado dinámico -->
+        </div>
+
+        <div id="cartVipUpsell" class="bg-babypink-100 border border-magenta-500/30 rounded-2xl p-3.5">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <span class="text-[10px] font-extrabold uppercase text-magenta-700">Ahorra hoy mismo</span>
+              <p class="text-xs font-bold text-coffee-900">Activa SCENTIA Club VIP (S/ 29.90/mes)</p>
+              <p class="text-[11px] text-coffee-700 mt-0.5">Obtén 15% DCTO en este pedido + envío gratis.</p>
+            </div>
+            <button onclick="toggleVipSubscription()" class="px-3 py-1.5 rounded-lg bg-magenta-600 text-white text-[11px] font-bold shrink-0">
+              Activar
+            </button>
+          </div>
+        </div>
+
+        <div id="paymentMethodsSection" class="space-y-2.5">
+          <label class="block text-xs font-extrabold uppercase tracking-wider text-coffee-800">Método de Pago</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="selectPaymentMethod('Yape / Plin QR')" data-pay="Yape / Plin QR"
+              class="pay-method-btn p-2.5 rounded-xl border-2 border-leaf-700 bg-leaf-700/10 text-left transition">
+              <span class="block text-xs font-bold text-coffee-900">📱 Yape / Plin</span>
+              <span class="block text-[10px] text-coffee-600">Pago instantáneo</span>
+            </button>
+            <button type="button" onclick="selectPaymentMethod('Tarjeta Crédito / Débito')" data-pay="Tarjeta Crédito / Débito"
+              class="pay-method-btn p-2.5 rounded-xl border border-beige-300 bg-white text-left transition">
+              <span class="block text-xs font-bold text-coffee-900">💳 Tarjeta</span>
+              <span class="block text-[10px] text-coffee-600">Visa, MC, Amex</span>
+            </button>
+            <button type="button" onclick="selectPaymentMethod('Apple Pay / Google Pay')" data-pay="Apple Pay / Google Pay"
+              class="pay-method-btn p-2.5 rounded-xl border border-beige-300 bg-white text-left transition">
+              <span class="block text-xs font-bold text-coffee-900">⌚ Wallet Digital</span>
+              <span class="block text-[10px] text-coffee-600">Apple / Google Pay</span>
+            </button>
+            <button type="button" onclick="selectPaymentMethod('Efectivo Contraentrega')" data-pay="Efectivo Contraentrega"
+              class="pay-method-btn p-2.5 rounded-xl border border-beige-300 bg-white text-left transition">
+              <span class="block text-xs font-bold text-coffee-900">💵 Efectivo</span>
+              <span class="block text-[10px] text-coffee-600">Contraentrega / Caja</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-5 bg-white border-t border-beige-200 space-y-3">
+        <div class="space-y-1 text-xs">
+          <div class="flex justify-between text-coffee-700">
+            <span>Subtotal</span>
+            <span id="cartSubtotal">S/ 0.00</span>
+          </div>
+          <div id="cartVipDiscountRow" class="hidden flex justify-between text-magenta-600 font-bold">
+            <span>Descuento Club VIP (15%)</span>
+            <span id="cartVipDiscount">- S/ 0.00</span>
+          </div>
+          <div class="flex justify-between text-coffee-700">
+            <span>Costo de envío</span>
+            <span id="cartShipping">S/ 5.00</span>
+          </div>
+          <div class="flex justify-between text-base font-extrabold text-coffee-900 pt-2 border-t border-beige-200">
+            <span>Total a pagar</span>
+            <span id="cartTotal">S/ 0.00</span>
+          </div>
+        </div>
+
+        <button id="btnCheckout" onclick="processCheckout()"
+          class="w-full py-3.5 rounded-xl bg-leaf-700 hover:bg-leaf-800 disabled:opacity-40 text-white font-bold text-sm shadow-lg transition">
+          Confirmar Pedido Ahora
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DE UBICACIONES GUARDADAS ==================== -->
+  <div id="locationModal" class="hidden fixed inset-0 z-50 bg-coffee-900/70 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-beige-50 rounded-3xl max-w-md w-full p-6 border border-beige-300 shadow-2xl animate-fade-up">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-editorial text-xl font-bold text-coffee-900">Mis Ubicaciones</h3>
+        <button onclick="closeLocationModal()" class="w-8 h-8 rounded-full bg-beige-200 font-bold text-coffee-900">✕</button>
+      </div>
+
+      <div id="savedLocationsList" class="space-y-2 mb-4">
+        <!-- Lista dinámica -->
+      </div>
+
+      <form onsubmit="addNewLocation(event)" class="pt-3 border-t border-beige-200 space-y-2.5">
+        <label class="block text-xs font-bold uppercase text-coffee-800">Agregar nueva dirección</label>
+        <div class="flex gap-2">
+          <input type="text" id="newLocLabel" required placeholder="Ej. Gimnasio, Estudio..."
+            class="w-1/3 px-3 py-2 rounded-xl border border-beige-300 bg-white text-xs font-semibold" />
+          <input type="text" id="newLocAddress" required placeholder="Av. Larco 345, Miraflores"
+            class="w-2/3 px-3 py-2 rounded-xl border border-beige-300 bg-white text-xs" />
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-coffee-800 hover:bg-coffee-900 text-white text-xs font-bold">
+          + Guardar y Seleccionar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL DE CUPÓN QR CANJEABLE EN TIENDA ==================== -->
+  <div id="couponQrModal" class="hidden fixed inset-0 z-50 bg-coffee-900/75 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center border-2 border-leaf-700 shadow-2xl animate-fade-up">
+      <span class="inline-block px-3 py-1 rounded-full bg-babypink-100 text-magenta-600 text-[11px] font-extrabold uppercase mb-2">
+        Válido en Tienda Física SCENTIA
+      </span>
+      <h3 id="qrCouponTitle" class="font-editorial text-2xl font-bold text-coffee-900">20% en Filtrados V60</h3>
+      <p id="qrCouponDesc" class="text-xs text-coffee-600 mt-1">Presenta este código QR al barista en caja antes de ordenar.</p>
+
+      <div class="my-5 p-4 bg-beige-50 border-2 border-dashed border-coffee-700/40 rounded-2xl inline-block">
+        <svg class="w-40 h-40 mx-auto text-coffee-900" viewBox="0 0 100 100" fill="currentColor">
+          <rect x="10" y="10" width="25" height="25" rx="3" fill="none" stroke="currentColor" stroke-width="5"/>
+          <rect x="17" y="17" width="11" height="11" rx="1"/>
+          <rect x="65" y="10" width="25" height="25" rx="3" fill="none" stroke="currentColor" stroke-width="5"/>
+          <rect x="72" y="17" width="11" height="11" rx="1"/>
+          <rect x="10" y="65" width="25" height="25" rx="3" fill="none" stroke="currentColor" stroke-width="5"/>
+          <rect x="17" y="72" width="11" height="11" rx="1"/>
+          <rect x="44" y="12" width="6" height="6"/><rect x="52" y="20" width="6" height="6"/>
+          <rect x="44" y="28" width="6" height="12"/><rect x="14" y="45" width="12" height="6"/>
+          <rect x="32" y="45" width="8" height="8" fill="#B51763"/><rect x="46" y="46" width="10" height="10" fill="#1B4332"/>
+          <rect x="62" y="45" width="8" height="6"/><rect x="78" y="45" width="12" height="8"/>
+          <rect x="45" y="64" width="6" height="10"/><rect x="56" y="62" width="10" height="6"/>
+          <rect x="72" y="66" width="8" height="8"/><rect x="64" y="80" width="14" height="8"/>
+          <rect x="45" y="82" width="8" height="8" fill="#B51763"/>
+        </svg>
+        <span id="qrCouponCode" class="block mt-2 font-mono font-extrabold text-sm tracking-widest text-leaf-700">SCENTIA-V60</span>
+      </div>
+
+      <button onclick="closeCouponModal()" class="w-full py-3 rounded-xl bg-leaf-700 hover:bg-leaf-800 text-white font-bold text-xs">
+        Listo, cerrar código
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST FLOTANTE DE NOTIFICACIÓN / SUBIDA DE NIVEL ==================== -->
+  <div id="toastNotification" class="hidden fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-coffee-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-babypink-300/40 flex items-center gap-3 max-w-md w-[92%] animate-fade-up">
+    <span id="toastIcon" class="text-2xl">🎉</span>
+    <div class="text-xs">
+      <strong id="toastTitle" class="block text-babypink-200 font-bold text-sm">¡Pedido confirmado!</strong>
+      <span id="toastMessage" class="text-beige-100">Tu café ya está en preparación.</span>
+    </div>
+  </div>
+
+  <!-- ==================== LÓGICA JAVASCRIPT 100% EN MEMORIA (SIN COOKIES NI LOCALSTORAGE) ==================== -->
+  <script>
+    // 1. BANCO DE IMÁGENES EDITORIALES
+    const IMG = {
+      tempRose: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=600&q=80",
+      tempMatcha: "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=600&q=80",
+      tempOrange: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80",
+      espresso: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80",
+      latte: "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80",
+      cappuccino: "https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=600&q=80",
+      v60: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80",
+      mocha: "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=600&q=80",
+      icedLatte: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=600&q=80",
+      icedMocha: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80",
+      coldBrew: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80",
+      frappe: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80",
+      cheesecake: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80",
+      croissant: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80",
+      cookies: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80",
+      brownie: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80",
+      cinnamon: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=600&q=80",
+      tiramisu: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=600&q=80",
+      tart: "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=600&q=80",
+      toast: "https://images.unsplash.com/photo-1525351484163-7529414342d8?auto=format&fit=crop&w=600&q=80",
+      muffin: "https://images.unsplash.com/photo-1607958996333-41aef7caefaa?auto=format&fit=crop&w=600&q=80",
+      cake: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80"
+    };
+
+    // 2. CATÁLOGO COMPLETO DE 48 PRODUCTOS
+    const PRODUCTS = [
+      // 3 BEBIDAS DE TEMPORADA
+      { id: 1, name: "Latte Pétalos de Rosa & Cardamomo", category: "temporada", isDrink: true, price: 16.50, rating: 4.9, reviews: 142, tag: "✨ Ed. Temporada", img: IMG.tempRose, desc: "Espresso doble infusionado con agua de rosas orgánica, cardamomo tostado y espuma sedosa." },
+      { id: 2, name: "Iced Dirty Matcha & Frambuesa", category: "temporada", isDrink: true, price: 18.00, rating: 4.9, reviews: 198, tag: "🔥 El más pedido", img: IMG.tempMatcha, desc: "Capas de reducción de frambuesa natural, leche cremosa, matcha ceremonial Uji y shot de espresso." },
+      { id: 3, name: "Cold Brew Naranja Sanguina & Romero", category: "temporada", isDrink: true, price: 15.50, rating: 4.8, reviews: 89, tag: "✨ Nuevo", img: IMG.tempOrange, desc: "Macerado en frío por 18 horas con zumo fresco de naranja sanguina y aroma herbal de romero." },
+
+      // 10 CAFÉS CALIENTES
+      { id: 4, name: "Espresso Doble Origen Cajamarca", category: "calientes", isDrink: true, price: 9.50, rating: 4.8, reviews: 210, tag: null, img: IMG.espresso, desc: "Extracción intensa con crema avellanada y notas a cacao oscuro y panela." },
+      { id: 5, name: "Americano Clásico SCENTIA", category: "calientes", isDrink: true, price: 10.50, rating: 4.7, reviews: 175, tag: null, img: IMG.v60, desc: "Doble shot de especialidad suavizado con agua purificada a 92°C." },
+      { id: 6, name: "Flat White Sedoso", category: "calientes", isDrink: true, price: 13.50, rating: 4.9, reviews: 312, tag: "🔥 El más pedido", img: IMG.latte, desc: "Microespuma aterciopelada vertida sobre ristretto doble para un balance perfecto." },
+      { id: 7, name: "Capuccino Artesanal con Cacao", category: "calientes", isDrink: true, price: 13.00, rating: 4.8, reviews: 264, tag: "⭐ Favorito", img: IMG.cappuccino, desc: "Partes iguales de espresso, leche vaporizada y espuma densa espolvoreada con cacao fino." },
+      { id: 8, name: "Latte Vainilla de Madagascar", category: "calientes", isDrink: true, price: 14.50, rating: 4.8, reviews: 190, tag: null, img: IMG.latte, desc: "Infusión natural de vaina de vainilla con nuestro blend de la casa." },
+      { id: 9, name: "Mocha Oscuro 70% Cacao Amazónico", category: "calientes", isDrink: true, price: 15.50, rating: 4.9, reviews: 228, tag: "🔥 El más pedido", img: IMG.mocha, desc: "Ganache artesanal de chocolate peruano fundido con espresso y leche cremosa." },
+      { id: 10, name: "Filtrado V60 — Villa Rica", category: "calientes", isDrink: true, price: 14.00, rating: 4.9, reviews: 156, tag: "💎 Origen Único", img: IMG.v60, desc: "Preparado al momento en barra. Taza limpia con acidez cítrica brillante y final dulce." },
+      { id: 11, name: "Chemex para Compartir (2 Tazas)", category: "calientes", isDrink: true, price: 22.00, rating: 4.9, reviews: 94, tag: null, img: IMG.v60, desc: "Extracción pura y aromática ideal para disfrutar sin prisa." },
+      { id: 12, name: "Caramel Macchiato Salted", category: "calientes", isDrink: true, price: 15.00, rating: 4.7, reviews: 163, tag: null, img: IMG.latte, desc: "Leche manchada con espresso y hilos de caramelo salado hecho en casa." },
+      { id: 13, name: "Cortado Miel & Canela", category: "calientes", isDrink: true, price: 12.00, rating: 4.8, reviews: 118, tag: null, img: IMG.cappuccino, desc: "Espresso corto cortado con un toque de leche tibia, miel multifloral y canela Ceilán." },
+
+      // 10 CAFÉS FRÍOS & ICED
+      { id: 14, name: "Iced Mocha Latte", category: "frias", isDrink: true, price: 16.00, rating: 4.9, reviews: 345, tag: "🔥 El más pedido", img: IMG.icedMocha, desc: "Nuestro clásico frío con remolinos de chocolate oscuro, hielo cristalino y leche cremosa." },
+      { id: 15, name: "Iced Caramel Latte", category: "frias", isDrink: true, price: 15.50, rating: 4.8, reviews: 240, tag: "⭐ Favorito", img: IMG.icedLatte, desc: "Espresso recién extraído sobre hielo, leche fría y salsa artesanal de caramelo." },
+      { id: 16, name: "Cold Brew Clásico 18 Horas", category: "frias", isDrink: true, price: 14.00, rating: 4.8, reviews: 182, tag: null, img: IMG.coldBrew, desc: "Infusión lenta en frío de baja acidez y alto cuerpo achocolatado." },
+      { id: 17, name: "Espresso Tonic Botánico", category: "frias", isDrink: true, price: 15.50, rating: 4.9, reviews: 167, tag: "✨ Refrescante", img: IMG.tempOrange, desc: "Agua tónica artesanal, rodaja de toronja rosada y doble shot de espresso flotante." },
+      { id: 18, name: "Iced Spanish Latte (Leche Condensada)", category: "frias", isDrink: true, price: 15.50, rating: 4.9, reviews: 276, tag: "🔥 El más pedido", img: IMG.icedLatte, desc: "Textura ultra cremosa y dulzor equilibrado al estilo mediterráneo." },
+      { id: 19, name: "Frappé Mocha Avellana", category: "frias", isDrink: true, price: 17.50, rating: 4.7, reviews: 149, tag: null, img: IMG.frappe, desc: "Granizado cremoso de café, pasta de avellanas tostadas y cacao." },
+      { id: 20, name: "Affogato Vainilla & Espresso", category: "frias", isDrink: true, price: 16.50, rating: 4.9, reviews: 134, tag: "💎 Postre-Café", img: IMG.icedMocha, desc: "Bola de helado artesanal de vainilla bañada en un espresso caliente intenso." },
+      { id: 21, name: "Iced Americano Limón & Miel", category: "frias", isDrink: true, price: 13.50, rating: 4.6, reviews: 92, tag: null, img: IMG.coldBrew, desc: "Vibrante, cítrico y ligero para tardes soleadas." },
+      { id: 22, name: "Cold Brew Crema de Coco", category: "frias", isDrink: true, price: 16.50, rating: 4.8, reviews: 158, tag: null, img: IMG.icedLatte, desc: "Cold brew coronado con espuma fría batida de crema de coco orgánica." },
+      { id: 23, name: "Iced White Mocha & Pistacho", category: "frias", isDrink: true, price: 17.50, rating: 4.9, reviews: 205, tag: "⭐ Favorito", img: IMG.icedMocha, desc: "Chocolate blanco belga, crema de pistacho siciliano y espresso frío." },
+
+      // 25 ACOMPAÑAMIENTOS Y POSTRES
+      { id: 24, name: "Cheesecake de Frutos Rojos con Pistachos", category: "postres", isDrink: false, price: 16.50, rating: 5.0, reviews: 389, tag: "🔥 El más pedido", img: IMG.cheesecake, desc: "Cremoso cheesecake horneado con coulis de frambuesas y praliné crocante de pistachos." },
+      { id: 25, name: "Croissant Relleno de Mousse Frutal", category: "postres", isDrink: false, price: 14.50, rating: 4.9, reviews: 274, tag: "🔥 El más pedido", img: IMG.croissant, desc: "Hojaldre francés de mantequilla relleno con mousse ligero de maracuyá y frutos del bosque." },
+      { id: 26, name: "Galletas Orgánicas Chocochip & Sal de Maras", category: "postres", isDrink: false, price: 9.50, rating: 4.9, reviews: 310, tag: "⭐ Favorito", img: IMG.cookies, desc: "Crujientes por fuera y suaves por dentro, con trozos de chocolate al 70%." },
+      { id: 27, name: "Brownie Melcochudo de Pecanas Caramelizadas", category: "postres", isDrink: false, price: 12.50, rating: 4.8, reviews: 215, tag: null, img: IMG.brownie, desc: "Intenso en cacao peruano con nueces tostadas." },
+      { id: 28, name: "Rol de Canela & Glaseado de Queso Crema", category: "postres", isDrink: false, price: 13.50, rating: 4.9, reviews: 298, tag: "🔥 El más pedido", img: IMG.cinnamon, desc: "Masa brioche esponjosa recién horneada con canela aromática." },
+      { id: 29, name: "Tiramisú Clásico al Espresso SCENTIA", category: "postres", isDrink: false, price: 17.00, rating: 4.9, reviews: 245, tag: "💎 De la Casa", img: IMG.tiramisu, desc: "Bizcochos bañados en nuestro espresso de especialidad, mascarpone y cacao." },
+      { id: 30, name: "Tartaleta de Limón & Merengue Suizo", category: "postres", isDrink: false, price: 14.00, rating: 4.8, reviews: 164, tag: null, img: IMG.tart, desc: "Base sablé crocante, crema cítrica equilibrada y merengue flameado." },
+      { id: 31, name: "Keke Húmedo de Zanahoria & Nueces", category: "postres", isDrink: false, price: 13.50, rating: 4.8, reviews: 187, tag: null, img: IMG.cake, desc: "Especiado suave con frosting cremoso de vainilla." },
+      { id: 32, name: "Croissant Clásico de Mantequilla", category: "postres", isDrink: false, price: 10.50, rating: 4.7, reviews: 192, tag: null, img: IMG.croissant, desc: "Laminado artesanal de 27 capas, dorado y aireado." },
+      { id: 33, name: "Pain au Chocolat Belga", category: "postres", isDrink: false, price: 12.50, rating: 4.9, reviews: 230, tag: "⭐ Favorito", img: IMG.croissant, desc: "Hojaldre tibio con doble barra de chocolate semiamargo." },
+      { id: 34, name: "Muffin de Arándanos & Crumble de Avena", category: "postres", isDrink: false, price: 11.50, rating: 4.7, reviews: 138, tag: null, img: IMG.muffin, desc: "Esponjoso con arándanos frescos y cubierta crocante." },
+      { id: 35, name: "Tostada Masa Madre con Palta & Huevo Poché", category: "postres", isDrink: false, price: 18.50, rating: 4.9, reviews: 260, tag: "🔥 El más pedido", img: IMG.toast, desc: "Pan campesino artesanal, palta Hass, semillas tostadas y aceite de oliva." },
+      { id: 36, name: "Cheesecake Vasco Quemado", category: "postres", isDrink: false, price: 16.00, rating: 4.9, reviews: 219, tag: null, img: IMG.cheesecake, desc: "Centro ultra cremoso y superficie caramelizada." },
+      { id: 37, name: "Galleta Red Velvet & Chocolate Blanco", category: "postres", isDrink: false, price: 10.00, rating: 4.8, reviews: 174, tag: null, img: IMG.cookies, desc: "Suave textura aterciopelada con chips de chocolate blanco." },
+      { id: 38, name: "Alfajor Artesanal de Maicena & Manjar de Olla", category: "postres", isDrink: false, price: 8.50, rating: 4.8, reviews: 201, tag: null, img: IMG.cookies, desc: "Se deshace en la boca, relleno con dulce de leche artesanal." },
+      { id: 39, name: "Tarta de Manzana Caramelizada & Canela", category: "postres", isDrink: false, price: 14.50, rating: 4.7, reviews: 121, tag: null, img: IMG.tart, desc: "Manzanas horneadas sobre masa quebrada de mantequilla." },
+      { id: 40, name: "Keke de Plátano Orgánico & Chispas de Cacao", category: "postres", isDrink: false, price: 12.00, rating: 4.8, reviews: 169, tag: null, img: IMG.cake, desc: "Endulzado naturalmente con plátano maduro y panela." },
+      { id: 41, name: "Croissant Salado Caprese (Pesto & Mozzarella)", category: "postres", isDrink: false, price: 16.50, rating: 4.8, reviews: 155, tag: null, img: IMG.croissant, desc: "Queso mozzarella fundido, tomates confitados y pesto de albahaca." },
+      { id: 42, name: "Sándwich Ciabatta de Pollo al Pesto & Palta", category: "postres", isDrink: false, price: 19.50, rating: 4.9, reviews: 243, tag: "⭐ Favorito", img: IMG.toast, desc: "Pan ciabatta crocante calentado al grill." },
+      { id: 43, name: "Galletas de Avena, Pasas & Miel (Pack x2)", category: "postres", isDrink: false, price: 9.00, rating: 4.6, reviews: 98, tag: null, img: IMG.cookies, desc: "Opción saludable y energética para acompañar tu americano." },
+      { id: 44, name: "Torta de Chocolate Húmeda SCENTIA", category: "postres", isDrink: false, price: 16.50, rating: 5.0, reviews: 330, tag: "🔥 El más pedido", img: IMG.cake, desc: "Tres capas de bizcocho húmedo de cacao con fudge artesanal." },
+      { id: 45, name: "Éclair de Café & Avellanas", category: "postres", isDrink: false, price: 13.50, rating: 4.8, reviews: 144, tag: null, img: IMG.tiramisu, desc: "Pasta choux rellena de crema pastelera de espresso." },
+      { id: 46, name: "Quiche Artesanal de Espinaca & Queso Cabra", category: "postres", isDrink: false, price: 16.00, rating: 4.7, reviews: 112, tag: null, img: IMG.tart, desc: "Salado, suave y perfecto para el almuerzo ligero." },
+      { id: 47, name: "Bowl de Yogurt Griego, Granola & Frutos Rojos", category: "postres", isDrink: false, price: 15.50, rating: 4.8, reviews: 139, tag: null, img: IMG.cheesecake, desc: "Granola horneada con miel, frutos frescos y semillas de chía." },
+      { id: 48, name: "Blondie de Chocolate Blanco & Macadamia", category: "postres", isDrink: false, price: 12.50, rating: 4.8, reviews: 127, tag: null, img: IMG.brownie, desc: "Notas acarameladas de mantequilla dorada y nueces de macadamia." }
+    ];
+
+    // 3. SISTEMA PROGRESIVO DE 5 NIVELES CAFETEROS
+    const COFFEE_RANKS = [
+      { id: 1, name: "Primer Sorbo · Americano", minOrders: 0, icon: "☕", perk: "Acceso a cupones mensuales en app" },
+      { id: 2, name: "Crema Sedosa · Flat White", minOrders: 2, icon: "🥛", perk: "Topping o sirope gratis en 1 bebida/mes" },
+      { id: 3, name: "Extracción Pura · V60 Origen", minOrders: 5, icon: "⏳", perk: "10% DCTO en café en grano de 250g" },
+      { id: 4, name: "Cosecha Especial · Geisha Reserva", minOrders: 9, icon: "🌿", perk: "Acceso anticipado a bebidas de temporada" },
+      { id: 5, name: "Maestro Tostador · Leyenda SCENTIA", minOrders: 15, icon: "👑", perk: "Cata privada gratis + 1 bebida cortesía al mes" }
+    ];
+
+    // 4. CUPONES CANJEABLES EN TIENDA FÍSICA
+    const STORE_COUPONS = [
+      { id: "c1", code: "SCENTIA-V60", title: "20% DCTO en Métodos Filtrados", desc: "Válido en barra para V60, Chemex u Origami.", badge: "Tienda Física", color: "leaf" },
+      { id: "c2", code: "DULCE-DUO", title: "2x1 en Galletas Orgánicas", desc: "Por la compra de cualquier bebida caliente o fría.", badge: "Tardes Cozy", color: "magenta" },
+      { id: "c3", code: "GRANO-15", title: "S/ 10 DCTO en Café en Grano", desc: "En bolsas de 250g de Origen Cajamarca o Villa Rica.", badge: "Para Casa", color: "coffee" },
+      { id: "c4", code: "BIENVENIDA-SC", title: "Tamaño Grande Gratis", desc: "Upgrade sin costo de 12oz a 16oz en barra.", badge: "App Exclusivo", color: "magenta" }
+    ];
+
+    // 5. NICKNAMES DIVERTIDOS RELACIONADOS AL CAFÉ
+    const FUNNY_NICKNAMES = [
+      "Capitán Espresso", "Barista Nocturno", "Alma de V60", "Conde Macchiato",
+      "Chispa de Cafeína", "Poeta del Latte Art", "Nómada del Cold Brew", "Alquimista del Grano",
+      "Reina del Flat White", "Viajero de Origen", "Susurro de Cardamomo"
+    ];
+
+    // 6. ESTADO GLOBAL EN MEMORIA RAM (0 cookies, 0 localStorage, 100% compatible con iframes)
+    let state = {
+      user: {
+        isLoggedIn: false,
+        emailOrPhone: "camila.cafe@scentia.pe",
+        nickname: "Barista Nocturno",
+        isVip: false,
+        completedOrdersCount: 1,
+        locations: [
+          { label: "Casa", address: "Casa — Av. El Bosque 412, San Isidro" },
+          { label: "Oficina", address: "Oficina — Torre Begonias Piso 8" },
+          { label: "Universidad", address: "Universidad — Campus Central Pabellón B" }
+        ],
+        activeLocation: "Casa — Av. El Bosque 412, San Isidro"
+      },
+      categoryFilter: "all",
+      cart: [],
+      deliveryMode: "delivery",
+      paymentMethod: "Yape / Plin QR",
+      ordersHistory: [
+        {
+          id: "SC-1042",
+          date: "Hace 2 días",
+          itemsSummary: "1x Iced Mocha Latte (Grande, Avena), 1x Cheesecake de Frutos Rojos con Pistachos",
+          total: 34.50,
+          status: "Entregado",
+          rating: 5,
+          comment: "¡El cheesecake con pistachos es otro nivel y el iced mocha llegó súper frío!"
+        }
+      ],
+      eventBookings: []
+    };
+
+    let currentModalProduct = null;
+    let currentCustom = {
+      size: "Regular (12 oz)",
+      sizeExtra: 0,
+      milk: "Entera Fresca",
+      milkExtra: 0,
+      sugar: "Poco Dulce (50%)",
+      pastryTemp: "Tibio recién horneado",
+      qty: 1
+    };
+
+    // ==================== INICIALIZACIÓN DIRECTA (SIN BLOQUEOS PARA PRESENTACIONES) ====================
+    window.addEventListener("DOMContentLoaded", () => {
+      renderCoupons();
+      renderMenu();
+      updateUserUI();
+      renderCart();
+      renderOrdersHistory();
+
+      const todayStr = new Date().toISOString().split("T")[0];
+      const evDate = document.getElementById("eventDate");
+      if (evDate) evDate.value = todayStr;
+    });
+
+    // ==================== LOGIN SIMULADO (ACEPTA CUALQUIER CREDENCIAL O INVITADO) ====================
+    function openLoginModal() {
+      document.getElementById("loginModal").classList.remove("hidden");
+    }
+
+    function closeLoginModal() {
+      document.getElementById("loginModal").classList.add("hidden");
+    }
+
+    document.getElementById("simulatedLoginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const contact = document.getElementById("loginEmailOrPhone").value.trim() || "cliente@scentia.pe";
+      const nick = document.getElementById("loginNickname").value.trim() || "Alma de V60";
+      const loc = document.getElementById("loginLocation").value;
+
+      state.user.isLoggedIn = true;
+      state.user.emailOrPhone = contact;
+      state.user.nickname = nick;
+      state.user.activeLocation = loc;
+
+      closeLoginModal();
+      updateUserUI();
+      showToast("☕", `¡Sesión iniciada como ${nick}!`, "Acceso simulado activo • Todo guardado en esta sesión.");
+    });
+
+    function enterAsGuest() {
+      state.user.isLoggedIn = false;
+      state.user.nickname = "Invitado Cafetero";
+      state.user.emailOrPhone = "Modo Invitado (Sin registro)";
+      closeLoginModal();
+      updateUserUI();
+      showToast("✨", "Modo Invitado Activo", "Explora y realiza pedidos libremente.");
+    }
+
+    function generateRandomNickname() {
+      const random = FUNNY_NICKNAMES[Math.floor(Math.random() * FUNNY_NICKNAMES.length)];
+      document.getElementById("loginNickname").value = random;
+    }
+
+    // ==================== NAVEGACIÓN ENTRE PESTAÑAS ====================
+    function switchMainTab(tab) {
+      const viewHome = document.getElementById("viewHome");
+      const viewProfile = document.getElementById("viewProfile");
+      const dHome = document.getElementById("navDesktopHome");
+      const dProf = document.getElementById("navDesktopProfile");
+      const mHome = document.getElementById("navMobileHome");
+      const mProf = document.getElementById("navMobileProfile");
+
+      if (tab === "home") {
+        viewHome.classList.remove("hidden");
+        viewProfile.classList.add("hidden");
+        dHome.className = "px-3.5 py-1.5 rounded-full text-xs font-bold bg-coffee-800 text-white transition";
+        dProf.className = "px-3.5 py-1.5 rounded-full text-xs font-bold text-coffee-800 hover:bg-white/60 transition";
+        mHome.className = "flex flex-col items-center gap-0.5 text-leaf-700 font-bold text-xs";
+        mProf.className = "flex flex-col items-center gap-0.5 text-coffee-700 font-semibold text-xs";
+      } else {
+        viewHome.classList.add("hidden");
+        viewProfile.classList.remove("hidden");
+        dProf.className = "px-3.5 py-1.5 rounded-full text-xs font-bold bg-coffee-800 text-white transition";
+        dHome.className = "px-3.5 py-1.5 rounded-full text-xs font-bold text-coffee-800 hover:bg-white/60 transition";
+        mProf.className = "flex flex-col items-center gap-0.5 text-leaf-700 font-bold text-xs";
+        mHome.className = "flex flex-col items-center gap-0.5 text-coffee-700 font-semibold text-xs";
+        renderRanksTimeline();
+        renderOrdersHistory();
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ==================== SISTEMA DE NIVELES CAFETEROS & UI USUARIO ====================
+    function getCurrentRankInfo() {
+      const count = state.user.completedOrdersCount;
+      let current = COFFEE_RANKS[0];
+      let next = null;
+      for (let i = 0; i < COFFEE_RANKS.length; i++) {
+        if (count >= COFFEE_RANKS[i].minOrders) {
+          current = COFFEE_RANKS[i];
+          next = COFFEE_RANKS[i + 1] || null;
+        }
+      }
+      return { current, next, count };
+    }
+
+    function updateUserUI() {
+      const { current, next, count } = getCurrentRankInfo();
+
+      document.getElementById("heroNickname").textContent = state.user.nickname;
+      document.getElementById("profileNickname").textContent = state.user.nickname;
+      document.getElementById("profilePhone").textContent = state.user.emailOrPhone;
+
+      // Botón superior de sesión
+      const loginLabel = document.getElementById("headerLoginLabel");
+      const btnHeaderLogin = document.getElementById("btnHeaderLogin");
+      if (state.user.isLoggedIn) {
+        loginLabel.textContent = state.user.nickname;
+        btnHeaderLogin.className = "px-3 py-2 rounded-full bg-leaf-700/10 hover:bg-leaf-700/20 border border-leaf-700/30 text-leaf-800 text-xs font-bold transition flex items-center gap-1.5 shrink-0";
+      } else {
+        loginLabel.textContent = "Iniciar Sesión";
+        btnHeaderLogin.className = "px-3 py-2 rounded-full bg-white hover:bg-beige-200 border border-beige-300 text-coffee-900 text-xs font-bold transition flex items-center gap-1.5 shrink-0";
+      }
+
+      // Ubicaciones
+      document.getElementById("headerLocationText").textContent = state.user.activeLocation;
+      document.getElementById("deliveryBoxAddress").textContent = state.user.activeLocation;
+
+      // Rango
+      document.getElementById("headerRankIcon").textContent = current.icon;
+      document.getElementById("headerRankName").textContent = current.name;
+      document.getElementById("heroRankIcon").textContent = current.icon;
+      document.getElementById("heroRankTitle").textContent = current.name;
+      document.getElementById("profileRankEmoji").textContent = current.icon;
+      document.getElementById("profileRankFull").textContent = current.name;
+      document.getElementById("profileTotalOrders").textContent = count;
+
+      document.getElementById("heroOrdersCountText").textContent = `${count} ${count === 1 ? "pedido completado" : "pedidos completados"}`;
+
+      if (next) {
+        const remaining = next.minOrders - count;
+        const spanTotal = next.minOrders - current.minOrders;
+        const progress = Math.min(100, Math.max(15, Math.round(((count - current.minOrders) / spanTotal) * 100)));
+        document.getElementById("heroNextRankText").textContent = `Falta${remaining === 1 ? '' : 'n'} ${remaining} para ${next.name}`;
+        document.getElementById("heroRankProgressBar").style.width = `${progress}%`;
+      } else {
+        document.getElementById("heroNextRankText").textContent = "¡Has alcanzado el rango máximo!";
+        document.getElementById("heroRankProgressBar").style.width = "100%";
+      }
+
+      // Estado VIP
+      const isVip = state.user.isVip;
+      document.getElementById("heroVipBadge").classList.toggle("hidden", !isVip);
+      document.getElementById("profileVipTag").classList.toggle("hidden", !isVip);
+      document.getElementById("cartVipUpsell").classList.toggle("hidden", isVip);
+
+      const btnHeroVip = document.getElementById("btnToggleVipHero");
+      const btnProfVip = document.getElementById("btnProfileVip");
+      if (isVip) {
+        btnHeroVip.textContent = "👑 Membresía VIP Activa (15% DCTO + Envío Gratis)";
+        btnHeroVip.className = "w-full py-2.5 px-4 rounded-xl bg-leaf-700 text-white font-bold text-xs shadow-sm";
+        btnProfVip.textContent = "👑 Club VIP Activo (Gestionar)";
+        btnProfVip.className = "px-4 py-2 rounded-xl bg-leaf-700 text-white text-xs font-bold shadow-sm";
+      } else {
+        btnHeroVip.textContent = "✨ Activar SCENTIA Club VIP (S/ 29.90/mes)";
+        btnHeroVip.className = "w-full py-2.5 px-4 rounded-xl bg-magenta-600 hover:bg-magenta-700 text-white font-bold text-xs tracking-wide shadow-sm transition";
+        btnProfVip.textContent = "👑 Unirme a Club VIP (S/ 29.90/mes)";
+        btnProfVip.className = "px-4 py-2 rounded-xl bg-magenta-600 hover:bg-magenta-700 text-white text-xs font-bold shadow-sm transition";
+      }
+
+      renderRanksTimeline();
+      renderCart();
+    }
+
+    function renderRanksTimeline() {
+      const container = document.getElementById("ranksTimelineGrid");
+      if (!container) return;
+      const count = state.user.completedOrdersCount;
+
+      container.innerHTML = COFFEE_RANKS.map(rank => {
+        const unlocked = count >= rank.minOrders;
+        return `
+          <div class="p-3.5 rounded-2xl border ${unlocked ? 'bg-leaf-700/10 border-leaf-700' : 'bg-beige-50 border-beige-300 opacity-65'} flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xl">${rank.icon}</span>
+                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${unlocked ? 'bg-leaf-700 text-white' : 'bg-beige-200 text-coffee-700'}">
+                  ${unlocked ? 'Desbloqueado' : `${rank.minOrders} pedidos`}
+                </span>
+              </div>
+              <h4 class="font-bold text-xs text-coffee-900">${rank.name}</h4>
+            </div>
+            <p class="text-[11px] text-coffee-700 mt-2 pt-2 border-t border-coffee-900/10">${rank.perk}</p>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function toggleVipSubscription() {
+      state.user.isVip = !state.user.isVip;
+      updateUserUI();
+      if (state.user.isVip) {
+        showToast("👑", "¡Bienvenido a SCENTIA Club VIP!", "Se aplicó 15% de descuento extra y envío gratis.");
+      } else {
+        showToast("ℹ️", "Suscripción pausada", "Puedes reactivar SCENTIA Club VIP cuando quieras.");
+      }
+    }
+
+    // ==================== CUPONES CANJEABLES EN TIENDA ====================
+    function renderCoupons() {
+      const container = document.getElementById("couponsContainer");
+      container.innerHTML = STORE_COUPONS.map(c => {
+        const badgeBg = c.color === "magenta" ? "bg-babypink-100 text-magenta-700" :
+                        c.color === "leaf" ? "bg-leaf-700/10 text-leaf-700" : "bg-beige-200 text-coffee-800";
+        return `
+          <div class="bg-white border-2 border-dashed border-beige-300 hover:border-magenta-500 rounded-2xl p-4 flex flex-col justify-between transition shadow-xs">
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded-md ${badgeBg} text-[10px] font-extrabold uppercase mb-2">
+                🎟️ ${c.badge}
+              </span>
+              <h4 class="font-bold text-sm text-coffee-900 leading-snug">${c.title}</h4>
+              <p class="text-xs text-coffee-600 mt-1">${c.desc}</p>
+            </div>
+            <button onclick="openCouponModal('${c.title}', '${c.desc}', '${c.code}')"
+              class="mt-3 w-full py-2 rounded-xl bg-beige-100 hover:bg-magenta-600 hover:text-white text-coffee-900 font-bold text-xs transition">
+              Canjear en Tienda (QR)
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function openCouponModal(title, desc, code) {
+      document.getElementById("qrCouponTitle").textContent = title;
+      document.getElementById("qrCouponDesc").textContent = desc;
+      document.getElementById("qrCouponCode").textContent = code;
+      document.getElementById("couponQrModal").classList.remove("hidden");
+    }
+
+    function closeCouponModal() {
+      document.getElementById("couponQrModal").classList.add("hidden");
+    }
+
+    // ==================== CATÁLOGO DE PRODUCTOS Y FILTROS ====================
+    function setCategoryFilter(cat) {
+      state.categoryFilter = cat;
+      document.querySelectorAll(".cat-pill").forEach(btn => {
+        const isSelected = btn.getAttribute("data-cat") === cat;
+        if (isSelected) {
+          btn.className = "cat-pill px-4 py-2 rounded-full text-xs font-bold bg-coffee-900 text-white shrink-0 transition shadow-xs";
+        } else if (btn.getAttribute("data-cat") === "temporada") {
+          btn.className = "cat-pill px-4 py-2 rounded-full text-xs font-bold bg-babypink-100 text-magenta-700 border border-magenta-500/30 hover:bg-babypink-200 shrink-0 transition";
+        } else {
+          btn.className = "cat-pill px-4 py-2 rounded-full text-xs font-bold bg-white text-coffee-800 border border-beige-300 hover:border-coffee-600 shrink-0 transition";
+        }
+      });
+      renderMenu();
+    }
+
+    function renderMenu() {
+      const grid = document.getElementById("menuGrid");
+      const query = document.getElementById("searchInput").value.toLowerCase().trim();
+
+      const filtered = PRODUCTS.filter(p => {
+        const matchesCat = state.categoryFilter === "all" || p.category === state.categoryFilter;
+        const matchesQuery = p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query);
+        return matchesCat && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-12 bg-white rounded-3xl border border-beige-300">
+            <span class="text-4xl block mb-2">☕</span>
+            <p class="font-bold text-coffee-900">No encontramos resultados para "${query}"</p>
+            <p class="text-xs text-coffee-600 mt-1">Prueba buscando cheesecake, matcha, latte o cold brew.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(prod => {
+        const tagBadge = prod.tag
+          ? `<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full ${prod.tag.includes('más pedido') ? 'bg-magenta-600 text-white' : 'bg-coffee-900/85 text-babypink-200'} backdrop-blur-xs text-[10px] font-extrabold shadow-sm">${prod.tag}</span>`
+          : "";
+
+        return `
+          <article class="bg-white border border-beige-300 hover:border-leaf-700 rounded-3xl overflow-hidden shadow-xs hover:shadow-lg transition flex flex-col justify-between group">
+            <div>
+              <div class="relative h-44 bg-beige-200 overflow-hidden cursor-pointer" onclick="openProductModal(${prod.id})">
+                <img src="${prod.img}" alt="${prod.name}" loading="lazy"
+                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                ${tagBadge}
+                <div class="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-lg bg-white/95 backdrop-blur-xs text-[11px] font-extrabold text-coffee-900 shadow-xs flex items-center gap-1">
+                  <span class="text-amber-500">★</span>
+                  <span>${prod.rating.toFixed(1)}</span>
+                  <span class="text-coffee-500 font-medium">(${prod.reviews})</span>
+                </div>
+              </div>
+
+              <div class="p-4">
+                <div class="flex items-start justify-between gap-2">
+                  <h4 class="font-bold text-sm text-coffee-900 leading-snug cursor-pointer hover:text-leaf-700" onclick="openProductModal(${prod.id})">
+                    ${prod.name}
+                  </h4>
+                </div>
+                <p class="text-xs text-coffee-600 mt-1.5 line-clamp-2 leading-relaxed">${prod.desc}</p>
+              </div>
+            </div>
+
+            <div class="px-4 pb-4 pt-2 flex items-center justify-between border-t border-beige-100">
+              <div>
+                <span class="text-[10px] uppercase font-bold text-coffee-500 block">Desde</span>
+                <span class="font-editorial font-extrabold text-base text-coffee-900">S/ ${prod.price.toFixed(2)}</span>
+              </div>
+              <button onclick="openProductModal(${prod.id})"
+                class="px-3.5 py-2 rounded-xl bg-leaf-700 hover:bg-leaf-800 text-white text-xs font-bold transition shadow-xs flex items-center gap-1">
+                <span>Personalizar</span>
+                <span>+</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    // ==================== MODAL DE PERSONALIZACIÓN TOTAL ====================
+    function openProductModal(id) {
+      const prod = PRODUCTS.find(p => p.id === id);
+      if (!prod) return;
+      currentModalProduct = prod;
+
+      currentCustom = {
+        size: "Regular (12 oz)",
+        sizeExtra: 0,
+        milk: "Entera Fresca",
+        milkExtra: 0,
+        sugar: "Poco Dulce (50%)",
+        pastryTemp: "Tibio recién horneado",
+        qty: 1
+      };
+
+      document.getElementById("modalProdImg").src = prod.img;
+      document.getElementById("modalProdName").textContent = prod.name;
+      document.getElementById("modalProdDesc").textContent = prod.desc;
+      document.getElementById("modalProdRating").textContent = `★ ${prod.rating.toFixed(1)} (${prod.reviews} reseñas)`;
+      document.getElementById("modalProdNote").value = "";
+      document.getElementById("modalProdQty").textContent = "1";
+
+      const badge = document.getElementById("modalProdBadge");
+      if (prod.tag) {
+        badge.textContent = prod.tag;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+
+      document.getElementById("drinkCustomOptions").classList.toggle("hidden", !prod.isDrink);
+      document.getElementById("pastryCustomOptions").classList.toggle("hidden", prod.isDrink);
+
+      resetCustomButtonsUI();
+      updateModalPrice();
+      document.getElementById("productModal").classList.remove("hidden");
+    }
+
+    function closeProductModal() {
+      document.getElementById("productModal").classList.add("hidden");
+    }
+
+    function selectCustomOption(type, value, extraPrice) {
+      if (type === "size") {
+        currentCustom.size = value;
+        currentCustom.sizeExtra = extraPrice;
+        highlightOptionGroup(".opt-btn-size", value);
+      } else if (type === "milk") {
+        currentCustom.milk = value;
+        currentCustom.milkExtra = extraPrice;
+        highlightOptionGroup(".opt-btn-milk", value);
+      } else if (type === "sugar") {
+        currentCustom.sugar = value;
+        highlightOptionGroup(".opt-btn-sugar", value);
+      } else if (type === "pastryTemp") {
+        currentCustom.pastryTemp = value;
+        highlightOptionGroup(".opt-btn-pastry", value);
+      }
+      updateModalPrice();
+    }
+
+    function highlightOptionGroup(selector, activeVal) {
+      document.querySelectorAll(selector).forEach(btn => {
+        const isMatch = btn.getAttribute("data-val") === activeVal;
+        if (isMatch) {
+          btn.classList.remove("border", "border-beige-300", "bg-white");
+          btn.classList.add("border-2", "border-leaf-700", "bg-leaf-700/10", "font-bold");
+        } else {
+          btn.classList.remove("border-2", "border-leaf-700", "bg-leaf-700/10", "font-bold");
+          btn.classList.add("border", "border-beige-300", "bg-white");
+        }
+      });
+    }
+
+    function resetCustomButtonsUI() {
+      highlightOptionGroup(".opt-btn-size", "Regular (12 oz)");
+      highlightOptionGroup(".opt-btn-milk", "Entera Fresca");
+      highlightOptionGroup(".opt-btn-sugar", "Poco Dulce (50%)");
+      highlightOptionGroup(".opt-btn-pastry", "Tibio recién horneado");
+    }
+
+    function changeModalQty(delta) {
+      currentCustom.qty = Math.max(1, Math.min(20, currentCustom.qty + delta));
+      document.getElementById("modalProdQty").textContent = currentCustom.qty;
+      updateModalPrice();
+    }
+
+    function updateModalPrice() {
+      if (!currentModalProduct) return;
+      const extras = currentModalProduct.isDrink ? (currentCustom.sizeExtra + currentCustom.milkExtra) : 0;
+      const total = (currentModalProduct.price + extras) * currentCustom.qty;
+      document.getElementById("modalTotalPrice").textContent = `S/ ${total.toFixed(2)}`;
+    }
+
+    function addConfiguredProductToCart() {
+      if (!currentModalProduct) return;
+      const note = document.getElementById("modalProdNote").value.trim();
+      const extras = currentModalProduct.isDrink ? (currentCustom.sizeExtra + currentCustom.milkExtra) : 0;
+      const unitPrice = currentModalProduct.price + extras;
+
+      const summary = currentModalProduct.isDrink
+        ? `${currentCustom.size} • ${currentCustom.milk} • ${currentCustom.sugar}${note ? ' • "' + note + '"' : ''}`
+        : `${currentCustom.pastryTemp}${note ? ' • "' + note + '"' : ''}`;
+
+      state.cart.push({
+        uid: Date.now() + Math.random(),
+        productId: currentModalProduct.id,
+        name: currentModalProduct.name,
+        img: currentModalProduct.img,
+        unitPrice,
+        qty: currentCustom.qty,
+        summary
+      });
+
+      closeProductModal();
+      renderCart();
+      showToast("🛍️", "Agregado a tu pedido", `${currentCustom.qty}x ${currentModalProduct.name}`);
+    }
+
+    // ==================== CARRITO & PASARELA DE PAGO ====================
+    function toggleCartDrawer(show) {
+      const drawer = document.getElementById("cartDrawer");
+      drawer.classList.toggle("hidden", !show);
+      if (show) renderCart();
+    }
+
+    function setDeliveryMode(mode) {
+      state.deliveryMode = mode;
+      const btnDel = document.getElementById("btnModeDelivery");
+      const btnPick = document.getElementById("btnModePickup");
+      const label = document.getElementById("deliveryBoxLabel");
+      const addr = document.getElementById("deliveryBoxAddress");
+
+      if (mode === "delivery") {
+        btnDel.className = "py-2 rounded-xl text-xs font-bold bg-coffee-900 text-white transition";
+        btnPick.className = "py-2 rounded-xl text-xs font-bold text-coffee-800 transition";
+        label.textContent = "Entregar en:";
+        addr.textContent = state.user.activeLocation;
+      } else {
+        btnPick.className = "py-2 rounded-xl text-xs font-bold bg-coffee-900 text-white transition";
+        btnDel.className = "py-2 rounded-xl text-xs font-bold text-coffee-800 transition";
+        label.textContent = "Recojo sin filas en:";
+        addr.textContent = "Barra SCENTIA — Av. El Bosque 412, San Isidro";
+      }
+      renderCart();
+    }
+
+    function selectPaymentMethod(method) {
+      state.paymentMethod = method;
+      document.querySelectorAll(".pay-method-btn").forEach(btn => {
+        const isMatch = btn.getAttribute("data-pay") === method;
+        if (isMatch) {
+          btn.className = "pay-method-btn p-2.5 rounded-xl border-2 border-leaf-700 bg-leaf-700/10 text-left transition";
+        } else {
+          btn.className = "pay-method-btn p-2.5 rounded-xl border border-beige-300 bg-white text-left transition";
+        }
+      });
+    }
+
+    function removeCartItem(uid) {
+      state.cart = state.cart.filter(item => item.uid !== uid);
+      renderCart();
+    }
+
+    function renderCart() {
+      const list = document.getElementById("cartItemsList");
+      const totalItems = state.cart.reduce((acc, item) => acc + item.qty, 0);
+
+      document.getElementById("cartBadgeCount").textContent = totalItems;
+      document.getElementById("mobileCartBadge").textContent = totalItems;
+
+      if (state.cart.length === 0) {
+        list.innerHTML = `
+          <div class="text-center py-8 bg-white rounded-2xl border border-beige-300 p-4">
+            <span class="text-3xl block mb-1">☕</span>
+            <p class="text-xs font-bold text-coffee-900">Tu carrito está vacío</p>
+            <p class="text-[11px] text-coffee-600 mt-0.5">Explora nuestras 48 bebidas y postres artesanales.</p>
+          </div>
+        `;
+      } else {
+        list.innerHTML = state.cart.map(item => `
+          <div class="bg-white border border-beige-300 rounded-2xl p-3 flex items-center gap-3">
+            <img src="${item.img}" alt="${item.name}" class="w-14 h-14 rounded-xl object-cover shrink-0" />
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-1">
+                <h5 class="text-xs font-bold text-coffee-900 truncate">${item.qty}x ${item.name}</h5>
+                <button onclick="removeCartItem(${item.uid})" class="text-[11px] text-magenta-600 font-bold hover:underline">Quitar</button>
+              </div>
+              <p class="text-[10px] text-coffee-600 line-clamp-2 mt-0.5">${item.summary}</p>
+              <span class="block text-xs font-extrabold text-leaf-700 mt-1">S/ ${(item.unitPrice * item.qty).toFixed(2)}</span>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      const subtotal = state.cart.reduce((acc, item) => acc + item.unitPrice * item.qty, 0);
+      const vipDiscount = state.user.isVip ? subtotal * 0.15 : 0;
+      const shipping = state.cart.length === 0 ? 0 : (state.deliveryMode === "pickup" ? 0 : (state.user.isVip ? 0 : 5.00));
+      const finalTotal = Math.max(0, subtotal - vipDiscount + shipping);
+
+      document.getElementById("cartSubtotal").textContent = `S/ ${subtotal.toFixed(2)}`;
+      document.getElementById("cartShipping").textContent = shipping === 0 ? "GRATIS" : `S/ ${shipping.toFixed(2)}`;
+      document.getElementById("cartTotal").textContent = `S/ ${finalTotal.toFixed(2)}`;
+
+      const discRow = document.getElementById("cartVipDiscountRow");
+      if (state.user.isVip && subtotal > 0) {
+        discRow.classList.remove("hidden");
+        document.getElementById("cartVipDiscount").textContent = `- S/ ${vipDiscount.toFixed(2)}`;
+      } else {
+        discRow.classList.add("hidden");
+      }
+
+      document.getElementById("btnCheckout").disabled = state.cart.length === 0;
+    }
+
+    function processCheckout() {
+      if (state.cart.length === 0) return;
+
+      const prevRank = getCurrentRankInfo().current.name;
+      const subtotal = state.cart.reduce((acc, item) => acc + item.unitPrice * item.qty, 0);
+      const vipDiscount = state.user.isVip ? subtotal * 0.15 : 0;
+      const shipping = state.deliveryMode === "pickup" ? 0 : (state.user.isVip ? 0 : 5.00);
+      const total = subtotal - vipDiscount + shipping;
+
+      const itemsSummary = state.cart.map(i => `${i.qty}x ${i.name}`).join(", ");
+      const newOrder = {
+        id: "SC-" + Math.floor(1050 + Math.random() * 8900),
+        date: "Hoy • Ahora mismo",
+        itemsSummary,
+        total,
+        status: state.deliveryMode === "pickup" ? "Listo para recojo en 8 min" : "En camino • Pago: " + state.paymentMethod,
+        rating: 0,
+        comment: ""
+      };
+
+      state.ordersHistory.unshift(newOrder);
+      state.user.completedOrdersCount += 1;
+      state.cart = [];
+
+      toggleCartDrawer(false);
+      updateUserUI();
+      renderOrdersHistory();
+
+      const newRank = getCurrentRankInfo().current;
+      if (newRank.name !== prevRank) {
+        showToast(newRank.icon, `¡SUBISTE DE NIVEL! ${newRank.name}`, `Nuevo beneficio: ${newRank.perk}`);
+      } else {
+        showToast("✅", `Pedido #${newOrder.id} confirmado (${state.paymentMethod})`, "Ya puedes calificarlo con 5 estrellas desde tu Perfil.");
+      }
+    }
+
+    // ==================== UBICACIONES GUARDADAS ====================
+    function openLocationModal() {
+      renderSavedLocations();
+      document.getElementById("locationModal").classList.remove("hidden");
+    }
+
+    function closeLocationModal() {
+      document.getElementById("locationModal").classList.add("hidden");
+    }
+
+    function renderSavedLocations() {
+      const container = document.getElementById("savedLocationsList");
+      container.innerHTML = state.user.locations.map(loc => {
+        const isActive = state.user.activeLocation === loc.address;
+        return `
+          <button onclick="selectSavedLocation('${loc.address.replace(/'/g, "\\'")}')"
+            class="w-full p-3 rounded-2xl border ${isActive ? 'border-2 border-leaf-700 bg-leaf-700/10' : 'border-beige-300 bg-white'} text-left flex items-center justify-between transition">
+            <div>
+              <span class="block text-xs font-extrabold text-coffee-900">${loc.label}</span>
+              <span class="block text-[11px] text-coffee-600">${loc.address}</span>
+            </div>
+            ${isActive ? '<span class="text-xs font-bold text-leaf-700">✓ Activa</span>' : ''}
+          </button>
+        `;
+      }).join("");
+    }
+
+    function selectSavedLocation(address) {
+      state.user.activeLocation = address;
+      updateUserUI();
+      closeLocationModal();
+      showToast("📍", "Ubicación actualizada", address);
+    }
+
+    function addNewLocation(e) {
+      e.preventDefault();
+      const label = document.getElementById("newLocLabel").value.trim();
+      const addr = document.getElementById("newLocAddress").value.trim();
+      if (!label || !addr) return;
+      const fullAddr = `${label} — ${addr}`;
+      state.user.locations.push({ label, address: fullAddr });
+      state.user.activeLocation = fullAddr;
+      document.getElementById("newLocLabel").value = "";
+      document.getElementById("newLocAddress").value = "";
+      updateUserUI();
+      closeLocationModal();
+      showToast("📍", "Nueva ubicación guardada", fullAddr);
+    }
+
+    // ==================== HISTORIAL DE PEDIDOS, RESEÑAS 5 ESTRELLAS Y EVENTOS ====================
+    function renderOrdersHistory() {
+      const container = document.getElementById("ordersHistoryContainer");
+      if (!container) return;
+
+      container.innerHTML = state.ordersHistory.map((ord, idx) => {
+        const starsHtml = [1, 2, 3, 4, 5].map(star => `
+          <button type="button" onclick="rateOrder(${idx}, ${star})"
+            class="text-lg transition transform hover:scale-125 ${star <= ord.rating ? 'text-amber-500' : 'text-beige-300'}">
+            ★
+          </button>
+        `).join("");
+
+        return `
+          <div class="p-4 rounded-2xl bg-beige-50 border border-beige-300 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span class="text-xs font-extrabold text-coffee-900">Pedido #${ord.id}</span>
+                <span class="text-[11px] text-coffee-600 ml-2">${ord.date}</span>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full bg-leaf-700/15 text-leaf-700 text-[10px] font-extrabold">
+                ${ord.status} • S/ ${ord.total.toFixed(2)}
+              </span>
+            </div>
+
+            <p class="text-xs text-coffee-800 font-medium">${ord.itemsSummary}</p>
+
+            <div class="pt-2 border-t border-beige-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-1">
+                <span class="text-[11px] font-bold text-coffee-700 mr-1">Tu calificación:</span>
+                ${starsHtml}
+              </div>
+              ${ord.comment
+                ? `<p class="text-[11px] italic text-coffee-700 bg-white px-3 py-1 rounded-xl border border-beige-200">"${ord.comment}"</p>`
+                : `<div class="flex gap-1.5 flex-1 max-w-xs">
+                    <input type="text" id="reviewInput_${idx}" placeholder="Escribe tu reseña..."
+                      class="w-full px-2.5 py-1 rounded-lg border border-beige-300 bg-white text-[11px]" />
+                    <button onclick="saveOrderComment(${idx})" class="px-2.5 py-1 rounded-lg bg-magenta-600 text-white text-[11px] font-bold shrink-0">
+                      Enviar
+                    </button>
+                  </div>`
+              }
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function rateOrder(idx, stars) {
+      state.ordersHistory[idx].rating = stars;
+      renderOrdersHistory();
+      showToast("⭐", `¡Gracias por tus ${stars} estrellas!`, "Tu valoración ayuda a toda la comunidad SCENTIA.");
+    }
+
+    function saveOrderComment(idx) {
+      const input = document.getElementById(`reviewInput_${idx}`);
+      if (!input || !input.value.trim()) return;
+      state.ordersHistory[idx].comment = input.value.trim();
+      if (state.ordersHistory[idx].rating === 0) state.ordersHistory[idx].rating = 5;
+      renderOrdersHistory();
+      showToast("💬", "Reseña publicada", "Gracias por compartir tu experiencia SCENTIA.");
+    }
+
+    document.getElementById("eventBookingForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const type = document.getElementById("eventType").value;
+      const date = document.getElementById("eventDate").value;
+      const guests = document.getElementById("eventGuests").value;
+      const notes = document.getElementById("eventNotes").value.trim();
+
+      state.eventBookings.unshift({ type, date, guests, notes });
+      document.getElementById("eventNotes").value = "";
+
+      const list = document.getElementById("eventBookingsList");
+      list.innerHTML = state.eventBookings.map(ev => `
+        <div class="p-2.5 rounded-xl bg-leaf-700/10 border border-leaf-700/20 text-xs">
+          <strong class="text-leaf-800 block">✓ ${ev.type}</strong>
+          <span class="text-coffee-700 text-[11px]">Fecha: ${ev.date} • ${ev.guests} invitados</span>
+        </div>
+      `).join("");
+
+      showToast("📅", "Solicitud de evento enviada", "Nuestro equipo de catering te contactará por WhatsApp.");
+    });
+
+    // ==================== UTILIDAD DE NOTIFICACIÓN TOAST ====================
+    let toastTimeout = null;
+    function showToast(icon, title, message) {
+      const toast = document.getElementById("toastNotification");
+      document.getElementById("toastIcon").textContent = icon;
+      document.getElementById("toastTitle").textContent = title;
+      document.getElementById("toastMessage").textContent = message;
+      toast.classList.remove("hidden");
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3600);
+    }
+  </script>
+</body>
+</html>
